@@ -22,7 +22,7 @@ python_check:
 flask_check: python_check
 	echo "Checking if Flask is installed.... "
 	ifndef FLASK
-		$(error Flask not installed) #Placeholder for testing
+		echo "Installing Flask...." && sudo pip2 install flask
 	endif
 
 # Runs PIP and any other required package managers to install third-party dependencies.
