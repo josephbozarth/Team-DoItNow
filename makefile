@@ -10,6 +10,9 @@ FLASK := $(shell python -W ignore -c "help('modules');" | sed 's/ /\n/g' | grep 
 database:
 	echo "Building the database...." && sleep 2 && echo "done!"
 
+client_install:
+	cd client && npm install
+
 webserver: flask_check
 	echo "Installing Webserver...." && pip install flask
 
@@ -26,7 +29,7 @@ flask_check: python_check
 	endif
 
 # Runs PIP and any other required package managers to install third-party dependencies.
-install: database webserver
+install: database client_install webserver
 	echo "Installing...." && sleep 2 && echo "done!"
 
 # Runs the project

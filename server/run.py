@@ -10,9 +10,18 @@ app = Flask(__name__)
 def get_file(path):
 	return send_from_directory("./",path)
 
-@app.route('/hi')
-def hello_world():
-	return 'Hello World!'
+@app.route('/')
+def get_login():
+	return send_from_directory("./","login.html")
+
+@app.route('/app')
+def get_app_home():
+	return send_from_directory("./","app.html")
+
+@app.route('/app/<path:path>')
+def get_app(path):
+	return send_from_directory("./","app.html")
+
 
 @app.route('/api/test')
 def api_test():
