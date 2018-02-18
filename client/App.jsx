@@ -2,26 +2,34 @@ import React from 'react';
 import {render} from 'react-dom';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import Home from './pages/Home.jsx';
+import Dashboard from './pages/Dashboard.jsx';
+import SprintPlanning from './pages/SprintPlanning.jsx';
+
+const ListItemLink = ({ to, label }) => (
+  <Route path={to} children={({ match }) => (
+<li className={match ? 'active' : ''}>
+    <Link to={to}>{label}</Link>
+</li>
+)}/>
+);
 
 const App = () => (
     <Router>
         <div>
-            <ul>
-                <li>
-                    <Link to="/app">Home</Link>
-                </li>
-                <li>
-                    <Link to="/app/about">About</Link>
-                </li>
-                <li>
-                    <Link to="/app/topics">Topics</Link>
-                </li>
-            </ul>
-            <hr />
-            <Route exact path="/app" component={Home} />
-            <Route path="/app/about" component={Home} />
-            <Route path="/app/topics" component={Home} />
+            <div className="header">
+                <i className="fas fa-flask"></i>&nbsp;
+                <h2>Agility</h2>
+            </div>
+            <div className="menu">
+                <ul>
+                    <ListItemLink to="/app/dashboard" label="Dashboard" />
+                    <ListItemLink to="/app/sprint-planning" label="Sprint Planning" />
+                </ul>
+            </div>
+            <div className="page-container">
+                <Route path="/app/dashboard" component={Dashboard} />
+                <Route path="/app/sprint-planning" component={SprintPlanning} />
+            </div>
         </div>
     </Router>
 );

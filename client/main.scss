@@ -1,0 +1,66 @@
+$fa-font-path: "~font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome";
+
+html, body {
+    background-color: #eeeeee;
+    font-family: verdana;
+    font-size: 10pt;
+}
+
+body.login-page {
+
+    text-align: center;
+
+    .login-panel {
+        border: 1px solid #aaaaaa;
+        padding: 10px;
+        background-color: #dddddd;
+        display: inline-block;
+        width: 300px;
+    }
+
+}
+
+body.app-page {
+
+    div.header {
+        padding: 10px;
+
+        h2 { display: inline; }
+    }
+
+    div.menu {
+        background-color: #ccc;
+        border: 1px solid #777;
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            display: inline-block;
+            width: 150px;
+            text-align: center;
+            border-right: 1px solid #777;
+
+            a {
+                display: inline-block;
+                padding: 10px 0 10px 0;
+                width: 100%;
+                color: blue;
+                text-decoration: none;
+            }
+        }
+
+        li.active {
+            font-weight: bold;
+            background-color: lightblue;
+        }
+
+        li:hover {
+            background-color: #eeeeee;
+        }
+    }
+
+}
