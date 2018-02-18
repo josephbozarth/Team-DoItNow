@@ -11,8 +11,8 @@ SQL := $(shell command -v sqlite3 2> /dev/null)
 
 sqlite3_check:
 	echo "Checking if SQLite3 is installed... "
-	  if [ ! -e `which sqlite3` ]; 
-	  then cd /usr/ports/databases/sqlite3 && make install clean else echo "sqlite already installed" fi
+	  if [ ! -z 'which sqlite3' ]; 
+	  then echo "teamdoitnow" fi
 
 # Creates a sqlite3 database file with the schema pre-configured
 database:
