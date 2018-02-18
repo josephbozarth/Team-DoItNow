@@ -11,9 +11,8 @@ SQL := $(shell command -v sqlite3 2> /dev/null)
 
 sqlite3_check:
 	echo "Checking if SQLite3 is installed... "
-	ifndef SQL
-		$(error sqlite3 not installed)
-	endif	
+	  if [ ! -e `which sqlite3` ]; 
+	  then cd /usr/ports/databases/sqlite3 && make install clean else echo "sqlite already installed" fi
 
 # Creates a sqlite3 database file with the schema pre-configured
 database:
@@ -22,9 +21,7 @@ database:
 	sqlite3 agility.db "CREATE TABLE Feature_Request(feature_id INTEGER PRIMARY KEY, user_id INTEGER, name VARCHAR(50), description VARCHAR(150), FOREIGN KEY (user_id) REFERENCES User(user_id));"
 	sqlite3 agility.db "CREATE TABLE Sprint(sprint_id INTEGER PRIMARY KEY, name VARCHAR(30));"
 	sqlite3 agility.db "CREATE TABLE Story(story_id INTEGER PRIMARY KEY, feature_id INTEGER, user_id INTEGER, sprint_id INTEGER, name VARCHAR(30), description VARCHAR(150), FOREIGN KEY (feature_id) REFERENCES Feature_Request(feature_id), FOREIGN KEY (user_id) REFERENCES User(user_id), FOREIGN KEY (sprint_id) REFERENCES Sprint(sprint_id));"
-
 	
-
 client_install:
 	cd client && npm install
 
