@@ -6,9 +6,19 @@ PIP := $(shell command -v pip2 2> /dev/null)
 # See if Flask is installed
 FLASK := $(shell python -W ignore -c "help('modules');" | sed 's/ /\n/g' | grep flask)
 
+#See if SQLite3 is installed
+SQL := $(shell command -v sqlite3 2> /dev/null)
+
+sqlite3_check:
+	echo "Checking if SQLite3 is installed... "
+	ifndef SQL
+		$(error sqlite3 not installed)
+	endif	
+
 # Creates a sqlite3 database file with the schema pre-configured
 database:
 	echo "Building the database...." && sleep 2 && echo "done!"
+	
 
 client_install:
 	cd client && npm install
