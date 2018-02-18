@@ -17,8 +17,8 @@ const App = () => (
     <Router>
         <div>
             <div className="header">
-                <i className="fas fa-flask"></i>&nbsp;
-                <h2>Agility</h2>
+                <i className="fa fa-gear"></i>&nbsp;
+                <h1>Agility</h1>
             </div>
             <div className="menu">
                 <ul>
