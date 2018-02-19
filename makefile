@@ -6,21 +6,14 @@ PIP := $(shell command -v pip2 2> /dev/null)
 # See if Flask is installed
 FLASK := $(shell python -W ignore -c "help('modules');" | sed 's/ /\n/g' | grep flask)
 
-#See if SQLite3 is installed
-SQL := $(shell command -v sqlite3 2> /dev/null)
-
 sqlite3_check:
 	echo "Checking if SQLite3 is installed... "
-	  if [ ! -z `which sqlite3` ]; 
-	  then echo "teamdoitnow" fi #testing purposes
+	  if [ -z `which sqlite3` ]; 
+	  then $(error sqlite3 not installed) fi #testing purposes
 
 # Creates a sqlite3 database file with the schema pre-configured
-database:
-	echo "Building the database...." && sleep 2 && echo "done!"
-	sqlite3 agility.db "CREATE TABLE User(user_id INTEGER PRIMARY KEY, email VARCHAR(50), password_hash VARCHAR(20), role VARCHAR(30));"
-	sqlite3 agility.db "CREATE TABLE Feature_Request(feature_id INTEGER PRIMARY KEY, user_id INTEGER, name VARCHAR(50), description VARCHAR(150), FOREIGN KEY (user_id) REFERENCES User(user_id));"
-	sqlite3 agility.db "CREATE TABLE Sprint(sprint_id INTEGER PRIMARY KEY, name VARCHAR(30));"
-	sqlite3 agility.db "CREATE TABLE Story(story_id INTEGER PRIMARY KEY, feature_id INTEGER, user_id INTEGER, sprint_id INTEGER, name VARCHAR(30), description VARCHAR(150), FOREIGN KEY (feature_id) REFERENCES Feature_Request(feature_id), FOREIGN KEY (user_id) REFERENCES User(user_id), FOREIGN KEY (sprint_id) REFERENCES Sprint(sprint_id));"
+database: sqlite3_check
+	
 	
 client_install:
 	cd client && npm install
