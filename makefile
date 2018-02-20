@@ -13,7 +13,8 @@ sqlite3_check:
 
 # Creates a sqlite3 database file with the schema pre-configured
 database: sqlite3_check
-	sqlite3 agility.db ".read schema.sql"
+	sqlite3 agility.db ".read schema.sql" 
+#hello
 	
 client_install:
 	cd client && npm install
