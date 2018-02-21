@@ -1,10 +1,3 @@
-DROP TABLE IF EXISTS entries;
-CREATE TABLE entries (
-  id integer PRIMARY KEY AUTOINCREMENT,
-  title text NOT NULL,
-  'text' text NOT NULL
-);
-
 DROP TABLE IF EXISTS User;
 CREATE TABLE User (
   user_id INTEGER PRIMARY KEY NOT NULL,
