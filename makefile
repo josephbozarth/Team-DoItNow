@@ -18,6 +18,10 @@ endif
 # Creates a sqlite3 database file with the schema pre-configured
 database: sqlite3_check
 	sqlite3 agility.db ".read db/schema.sql" 
+
+# Test data for db
+testDB:
+	sqlite3 agility.db ".read db/UserTest.sql"
 	
 client_install:
 	cd client && npm install
