@@ -18,6 +18,7 @@ endif
 # Creates a sqlite3 database file with the schema pre-configured
 database: sqlite3_check
 	sqlite3 agility.db ".read db/schema.sql" 
+	sqlite3 agility.db "PRAGMA foreign_keys = TRUE;"
 
 # Test data for db
 testDB:
