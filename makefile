@@ -21,7 +21,7 @@ database: sqlite3_check
 
 # Test data for db
 testDB:
-	sqlite3 agility.db ".read db/UserTest.sql"
+	sqlite3 agility.db ".read db/test.sql"
 	
 client_install:
 	cd client && npm install
