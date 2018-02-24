@@ -25,10 +25,17 @@ body.app-page {
 
     div.header {
         padding: 10px;
-        color: #006699;
+        overflow: hidden;
+        position: relative;
 
-        i { font-size: 30px; }
-        h1 { display: inline; }
+        .header-left {
+            i { font-size: 30px; }
+            h1 { display: inline; }
+            color: #006699;
+            float: left;
+        }
+
+        .header-right { float: right; }
     }
 
     div.menu {

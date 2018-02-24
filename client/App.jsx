@@ -2,6 +2,10 @@ import React from 'react';
 import {render} from 'react-dom';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+import UserMenu from './components/UserMenu.jsx';
+
+import Login from './pages/Login.jsx';
+
 import Dashboard from './pages/Dashboard.jsx';
 import SprintPlanning from './pages/SprintPlanning.jsx';
 
@@ -20,8 +24,13 @@ class App extends React.Component
             <Router>
                 <div>
                     <div className="header">
-                        <i className="fa fa-gear"></i>&nbsp;
-                        <h1>Agility</h1>
+                        <div className="header-left">
+                            <i className="fa fa-gear"></i>&nbsp;
+                            <h1>Agility</h1>
+                        </div>
+                        <div className="header-right">
+                            <UserMenu />
+                        </div>
                     </div>
                     <div className="menu">
                         <ul>
@@ -39,5 +48,11 @@ class App extends React.Component
     }
 }
 
+var app = document.getElementById('app');
 // render the page
-render(<App/>, document.getElementById('app'));    
+if (app) {
+    render(<App/>, document.getElementById('app'));    
+}
+else {
+    render(<Login/>, document.getElementById('login'));
+}
