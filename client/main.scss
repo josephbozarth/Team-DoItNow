@@ -83,6 +83,14 @@ body.app-page {
     }
 
     div.story-tile {
-        background-color: lightskyblue;
+        background-color: lightskyblue;   
+        
+        .right{
+            float:right;
+        }
+        
+        .left{
+            float:left;
+        }
     }
 }
