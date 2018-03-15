@@ -7,11 +7,8 @@ function config(token) {
 }
 
 function login(email, password) {
-  return Promise.resolve({ token: 'abcdegfh', user: {
-    firstName: 'TestUser', lastName: 'Last', role: 'Team leader', email
-  }});
-  //return api.post(`${USER_API}/session`, { email, password })
-  //  .then(res => res.data);
+  return api.post(`${USER_API}/session`, { email, password })
+    .then(res => res.data);
 }
 
 function getCurrentUser(token) {

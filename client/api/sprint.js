@@ -17,7 +17,7 @@ function getSprint(token, id) {
 }
 
 function getSprintStories(token, id) {
-  return api.get(`${SPRINT_API}/${id}\story`, config(token))
+  return api.get(`${SPRINT_API}/${id}/story`, config(token))
     .then(res => res.data);
 }
 
