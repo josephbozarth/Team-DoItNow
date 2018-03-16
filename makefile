@@ -21,7 +21,7 @@ database: sqlite3_check
 	sqlite3 agility.db "PRAGMA foreign_keys = TRUE;"
 
 # Test data for db
-testDB:
+testDB: database
 	sqlite3 agility.db ".read db/test.sql"
 	
 client_install:

@@ -3,17 +3,21 @@
 from flask import Flask,send_from_directory,json,jsonify,request,abort,redirect
 import os
 import sqlite3
-import bcrypt
-from flask_login import LoginManager,UserMixin, logout_user, login_user, login_required
+import bcrypt, md5
 import random
 import simplejson as json
 
 
-class User(UserMixin):
+SECRET_KEY = 0x14FD61F7510F
+
+user_table = []
+
+class User():
 	id = -1
 	email = ""
 	role = ""
 	token = ""
+	loggedIn = False
 	
 	def __init__(self, user_id):
 		global sqlCon
@@ -23,6 +27,28 @@ class User(UserMixin):
 		self.id = u[0]
 		self.email = u[1]
 		self.role = u[2]
+		self.makeToken(random.randint(1,0xFFFFFFFF))
+	
+	def makeToken(self,nonce):
+		m = md5.new()
+		m.update(str(nonce))
+		m.update(self.email)
+		self.token = m.digest().encode('hex')
+
+def doLogin(user):
+	user.loggedIn = True
+	if user not in user_table:
+		user_table.append(user)
+
+def isLoggedIn(token):
+	for u in user_table:
+		if u.token == token:
+			return u
+	return None
+
+def doLogout(user):
+	user.loggedIn = False
+	user_table.remove(user)
 
 def checkPass(email,passwd):
 	global sqlCon
@@ -36,20 +62,13 @@ def checkPass(email,passwd):
 		print "User found: ",u
 		return User(u[0])
 	else:
-		return -1
+		return None
 
 
-loginMan = LoginManager()
 app = Flask(__name__,static_folder='../client')
 app.config['SECRET_KEY'] = "Super secrey key"
-loginMan.init_app(app)
 sqlCon = sqlite3.connect('../agility.db')
 sqlCursor = sqlCon.cursor()
-
-
-@loginMan.user_loader
-def load_user(user_id):
-	return User(user_id)
 
 @app.route('/<path:path>')
 def get_file(path):
@@ -66,18 +85,15 @@ def login():
 		print key, value
 	data = request.json
 	user = checkPass(data['email'],data['password'])
-	if user == -1:
+	if user is None:
 		return abort(401)
-	login_user(user)
-	return jsonify(token=user.id)
+	doLogin(user)
+	return jsonify(token=user.token)
 		
 @app.route('/app/logout')
-@login_required
 def logout():
 	logout_user()
 	return redirect('/')
-
-
 
 @app.route('/app')
 def get_app_home():
