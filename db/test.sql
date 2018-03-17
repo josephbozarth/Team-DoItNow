@@ -1,4 +1,5 @@
 --users 
+
 insert into User (email, first_name, role) values ('aorrom0@redcross.org', '$2a$04$0xcYFrZmcY/AWuVhqq3ZRuOKJeRO5ahEdINpqOU0KOiLZjGF3Rn5m', 'Team leader');
 insert into User (email, first_name, role) values ('mcoughtrey1@163.com', '$2a$04$0xcYFrZmcY/AWuVhqq3ZRuOKJeRO5ahEdINpqOU0KOiLZjGF3Rn5m', 'Team member');
 insert into User (email, first_name, role) values ('twhotton2@mozilla.org', '$2a$04$0xcYFrZmcY/AWuVhqq3ZRuOKJeRO5ahEdINpqOU0KOiLZjGF3Rn5m', 'Team leader');
@@ -101,6 +102,7 @@ insert into User (email, first_name, role) values ('cmacallen2q@hugedomains.com'
 insert into User (email, first_name, role) values ('shartman2r@usgs.gov', '$2a$04$0xcYFrZmcY/AWuVhqq3ZRuOKJeRO5ahEdINpqOU0KOiLZjGF3Rn5m', 'Product owner');
 
 --feature requests
+
 insert into Feature_Request (user_id, name, description) values (3, 'Team-oriented homogeneous access', 'Down-sized');
 insert into Feature_Request (user_id, name, description) values (6, 'Cross-group static open architecture', 'extranet');
 insert into Feature_Request (user_id, name, description) values (2, 'Stand-alone upward-trending definition', 'Virtual');
@@ -118,12 +120,14 @@ insert into Feature_Request (user_id, name, description) values (3, 'Distributed
 insert into Feature_Request (user_id, name, description) values (2, 'Grass-roots scalable matrix', 'Integrated');
 
 --sprints
+
 insert into Sprint (name) values ('Goldenrod');
 insert into Sprint (name) values ('Teal');
 insert into Sprint (name) values ('Fuscia');
 insert into Sprint (name) values ('Maroon');
 
 --stories
+
 insert into Story (feature_id, user_id, sprint_id, name, description) values (1, 1, 1, 'Suspendisse ornare consequat lectus.', 'global');
 insert into Story (feature_id, user_id, sprint_id, name, description) values (2, 1, 2, 'In blandit ultrices enim.', 'infrastructure');
 insert into Story (feature_id, user_id, sprint_id, name, description) values (3, 10, 3, 'Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa.', 'initiative');
