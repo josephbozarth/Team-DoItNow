@@ -88,7 +88,11 @@ def login():
 	if user is None:
 		return abort(401)
 	doLogin(user)
-	return jsonify(token=user.token)
+	userData = {}
+	userData['email'] = user.email	
+	userData['role'] = user.role
+	userData['name'] = 'user'
+	return jsonify(token=user.token,user=userData)
 		
 @app.route('/app/logout')
 def logout():
