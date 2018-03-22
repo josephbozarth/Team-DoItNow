@@ -2,6 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 
 import StoryView from '../views/StoryView.jsx';
+import FeatureForm from '/Users/JacksonWexler/Desktop/Agility/Team-DoItNow/client/views/FeatureForm.jsx'
 
 export default
 class SprintPlanning extends React.Component {
@@ -34,7 +35,8 @@ class SprintPlanning extends React.Component {
             <p>Sprint Planning Page!</p>
             <div>
                 {this.state.stories.map(story => <StoryView item={story} display="tile" />)}
-            </div>
+            </div>    
+            <FeatureForm /> 
         </div>);
     }
 }

@@ -35,6 +35,14 @@ class User():
 		m.update(self.email)
 		self.token = m.digest().encode('hex')
 
+	def serialize(self):
+		ob = {}
+		ob["id"] = self.id
+		ob["email"] = self.email
+		ob["role"] = self.role
+		ob["token"] = self.token
+		return jsonify(ob)
+
 def doLogin(user):
 	user.loggedIn = True
 	if user not in user_table:
@@ -64,7 +72,6 @@ def checkPass(email,passwd):
 	else:
 		return None
 
-
 app = Flask(__name__,static_folder='../client')
 app.config['SECRET_KEY'] = "Super secrey key"
 sqlCon = sqlite3.connect('../agility.db')
@@ -85,14 +92,16 @@ def login():
 		print key, value
 	data = request.json
 	user = checkPass(data['email'],data['password'])
+	print user
 	if user is None:
 		return abort(401)
 	doLogin(user)
-	userData = {}
-	userData['email'] = user.email	
-	userData['role'] = user.role
-	userData['name'] = 'user'
-	return jsonify(token=user.token,user=userData)
+	return user.serialize()
+	# userData = {}
+	# userData['email'] = user.email	
+	# userData['role'] = user.role
+	# userData['name'] = 'user'
+	# return jsonify(token=user.token,user=userData)
 		
 @app.route('/app/logout')
 def logout():

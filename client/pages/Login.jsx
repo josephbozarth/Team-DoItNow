@@ -33,8 +33,9 @@ class Dashboard extends React.Component {
     handleSubmit(event) {
         userApi.login(this.state.email, this.state.password)
             .then(login => {
+                window.sessionStorage.agilityUser = JSON.stringify(login);
                 window.sessionStorage.agilityToken = login.token;
-                window.sessionStorage.agilityUser = JSON.stringify(login.user);
+                
                 window.location = '/app/dashboard';
             })
             .catch(err => {
