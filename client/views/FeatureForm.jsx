@@ -54,7 +54,7 @@ render () {
                 <input id="desc" type="text" name="description" value={this.state.password} onChange={this.handleChange}/>
                 </div>
                 <input type="submit" value="Submit Request" />
-
+                <button onClick={this.closeModal}> Cancel</button>
             </form>
         </div>
     </div>)}
