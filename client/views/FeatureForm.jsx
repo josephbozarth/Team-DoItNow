@@ -47,13 +47,12 @@ render () {
             <form onSubmit={this.handleSubmit}> 
 
                 <label> Name: </label>
-                <input type="text" name="name" placeholder="ex. Add Github Integration" value={this.state.name} onChange={this.handleChange}/>
+                <input size="50" type="text" name="name" placeholder="ex. Add Github Integration" value={this.state.name} onChange={this.handleChange}/>
                 <br /><br />
                 <div>
-                <label> Description: </label>
-                <input type="text" name="description" value={this.state.password} onChange={this.handleChange}/>
+                <label> Description: <br /></label>
+                <input id="desc" type="text" name="description" value={this.state.password} onChange={this.handleChange}/>
                 </div>
-                <br /> <br /><br /><br /><br /><br /><br />
                 <input type="submit" value="Submit Request" />
 
             </form>
