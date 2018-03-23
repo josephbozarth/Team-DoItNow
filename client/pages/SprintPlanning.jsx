@@ -2,7 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 
 import StoryView from '../views/StoryView.jsx';
-import FeatureForm from '/Users/JacksonWexler/Desktop/Agility/Team-DoItNow/client/views/FeatureForm.jsx'
+import FeatureForm from '../views/FeatureForm.jsx'
 
 export default
 class SprintPlanning extends React.Component {
