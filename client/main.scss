@@ -23,6 +23,12 @@ body.login-page {
 
 body.app-page {
 
+    div.page-container {
+        position: relative;
+        overflow: hidden;
+        padding: 10px;
+    }
+
     div.header {
         padding: 10px;
         overflow: hidden;
@@ -77,7 +83,7 @@ body.app-page {
         width: 250px;
         height: 250px;
         padding: 10px;
-        margin: 10px 0 0 10px;
+        margin: 10px 10px 0 0;
         box-shadow: 0 0 3px #aaaaaa;
         background-color: lightgoldenrodyellow;
     }
@@ -93,6 +99,17 @@ body.app-page {
             float:left;
         }
     }
+
+    ul.nav.nav-tabs {
+        li {
+            width: 200px;
+            text-align: center;
+        }
+    }
+
+    div.tab-container {
+        padding: 10px;
+    }
 }
 
 div.popup {
@@ -107,14 +124,15 @@ div.popup {
     background-color: rgba(0,0,0, 0.5);
 
     div.popup_inner {
-        border: 4px solid #aaaaaa;
+        text-align: center;
+        border: 1px solid #aaaaaa;
         position: fixed;
         left: 35%;
         right: 30%;
         top: 25%;
         bottom: 40%;
         margin: auto;
-        background: lightskyblue;
+        background: #dddddd;
       }
   }
 

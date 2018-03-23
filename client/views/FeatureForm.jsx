@@ -1,5 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
+import { Button } from 'react-bootstrap';
 
 //import featureAPI from /Users/JacksonWexler/Desktop/Agility/Team-DoItNow/client/api/feature.js;
 
@@ -38,23 +39,26 @@ class FeatureForm extends React.Component {
 
 render () {
     return (<div>
-        <button onClick={this.openModal}> Feature Product Request</button>
+        <Button onClick={this.openModal}><i className="fa fa-plus"></i>&nbsp;Add Feature Request</Button>
 
         {this.state.modalActive && (
             <div className='popup'>
             <div className='popup_inner'>
-            <h1> Feature Product Request Form</h1>
+            <h1>Create Feature Request</h1>
+            <hr width="100%"></hr>
             <form onSubmit={this.handleSubmit}> 
 
-                <label> Name: </label>
+                <label> Name: &nbsp;</label>
                 <input size="50" type="text" name="name" placeholder="ex. Add Github Integration" value={this.state.name} onChange={this.handleChange}/>
                 <br /><br />
                 <div>
-                <label> Description: <br /></label>
+                <label> Description:&nbsp; <br /><br /></label>
                 <input id="desc" type="text" name="description" value={this.state.password} onChange={this.handleChange}/>
                 </div>
-                <input type="submit" value="Submit Request" />
-                <button onClick={this.closeModal}> Cancel</button>
+                <br />
+                <input type="submit" value="Submit Request" className="btn btn-default" />
+                &nbsp;
+                <Button onClick={this.closeModal}> Cancel</Button>
             </form>
         </div>
     </div>)}
