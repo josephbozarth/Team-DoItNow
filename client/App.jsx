@@ -1,6 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Button, Nav, Navbar, NavDropdown, MenuItem, NavItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 import UserMenu from './components/UserMenu.jsx';
 
@@ -33,10 +35,14 @@ class App extends React.Component
                         </div>
                     </div>
                     <div className="menu">
-                        <ul>
-                            <ListItemLink to="/app/dashboard" label="Dashboard" />
-                            <ListItemLink to="/app/sprint-planning" label="Sprint Planning" />
-                        </ul>
+                        <Nav bsStyle="pills" activeKey={1}>
+                            <LinkContainer to="/app/dashboard">
+                                <NavItem eventKey={1}>Dashboard</NavItem>
+                            </LinkContainer>
+                            <LinkContainer to="/app/sprint-planning">
+                                <NavItem eventKey={2}>Sprint Planning</NavItem>
+                            </LinkContainer>
+                        </Nav>
                     </div>
                     <div className="page-container">
                         <Route path="/app/dashboard" component={Dashboard} />
@@ -47,6 +53,13 @@ class App extends React.Component
         );
     }
 }
+
+/*
+                        <ul>
+                            <ListItemLink to="/app/dashboard" label="Dashboard" />
+                            <ListItemLink to="/app/sprint-planning" label="Sprint Planning" />
+                        </ul>
+*/
 
 var app = document.getElementById('app');
 // render the page

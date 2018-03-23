@@ -45,36 +45,14 @@ body.app-page {
     }
 
     div.menu {
-        background-color: #ccc;
-        border: 1px solid #777;
-
-        ul {
-            margin: 0;
-            padding: 0;
-        }
+        background-color: #ddddea;
+        padding: 5px;
+        border: 1px solid #aaaaaa;
 
         li {
-            display: inline-block;
             width: 150px;
             text-align: center;
-            border-right: 1px solid #777;
-
-            a {
-                display: inline-block;
-                padding: 10px 0 10px 0;
-                width: 100%;
-                color: blue;
-                text-decoration: none;
-            }
-        }
-
-        li.active {
-            font-weight: bold;
-            background-color: lightblue;
-        }
-
-        li:hover {
-            background-color: #eeeeee;
+            margin: 5px;
         }
     }
 
@@ -86,11 +64,7 @@ body.app-page {
         margin: 10px 10px 0 0;
         box-shadow: 0 0 3px #aaaaaa;
         background-color: lightgoldenrodyellow;
-    }
 
-    div.story-tile {
-        background-color: lightskyblue;   
-        
         .right{
             float:right;
         }
@@ -98,6 +72,33 @@ body.app-page {
         .left{
             float:left;
         }
+    }
+
+    div.feature-tile {
+        background-color: lightgoldenrodyellow;
+        height: 90px;
+        cursor: pointer;
+
+        .story-count {
+            text-align: center;
+            padding: 5px;
+        }
+    }
+
+    div.sprint-tile {
+        background-color: lightgreen;   
+        height: 90px;
+        cursor: pointer;
+
+        .story-count {
+            text-align: center;
+            padding: 5px;
+        }
+    }
+
+    div.story-tile {
+        background-color: lightskyblue;   
+        cursor: pointer;
     }
 
     ul.nav.nav-tabs {
