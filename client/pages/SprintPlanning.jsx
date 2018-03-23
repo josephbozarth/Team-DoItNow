@@ -35,7 +35,7 @@ class SprintPlanning extends React.Component {
             <p>Sprint Planning Page!</p>
             <div>
                 {this.state.stories.map(story => <StoryView item={story} display="tile" />)}
-            </div>    
+            </div>   
             <FeatureForm /> 
         </div>);
     }

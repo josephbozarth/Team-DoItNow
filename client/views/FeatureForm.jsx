@@ -1,6 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
 
+//import featureAPI from /Users/JacksonWexler/Desktop/Agility/Team-DoItNow/client/api/feature.js;
+
 export default
 class FeatureForm extends React.Component {
     constructor(props){
@@ -30,6 +32,7 @@ class FeatureForm extends React.Component {
 
     handleSubmit(evt) {
         this.setState({ modalActive: false})
+
         evt.preventDefault();
     }
 
@@ -44,11 +47,13 @@ render () {
             <form onSubmit={this.handleSubmit}> 
 
                 <label> Name: </label>
-                <input type="text" name="name" value={this.state.name} onChange={this.handleChange}/>
+                <input type="text" name="name" placeholder="ex. Add Github Integration" value={this.state.name} onChange={this.handleChange}/>
+                <br /><br />
                 <div>
                 <label> Description: </label>
                 <input type="text" name="description" value={this.state.password} onChange={this.handleChange}/>
                 </div>
+                <br /> <br /><br /><br /><br /><br /><br />
                 <input type="submit" value="Submit Request" />
 
             </form>
