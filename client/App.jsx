@@ -10,6 +10,7 @@ import Login from './pages/Login.jsx';
 
 import Dashboard from './pages/Dashboard.jsx';
 import SprintPlanning from './pages/SprintPlanning.jsx';
+import Team from './pages/Team.jsx';
 
 const ListItemLink = ({ to, label }) => (
   <Route path={to} children={({ match }) => (
@@ -42,11 +43,15 @@ class App extends React.Component
                             <LinkContainer to="/app/sprint-planning">
                                 <NavItem eventKey={2}>Sprint Planning</NavItem>
                             </LinkContainer>
+                            <LinkContainer to="/app/team">
+                                <NavItem eventKey={3}>Team</NavItem>
+                            </LinkContainer>
                         </Nav>
                     </div>
                     <div className="page-container">
                         <Route path="/app/dashboard" component={Dashboard} />
                         <Route path="/app/sprint-planning" component={SprintPlanning} />
+                        <Route path="/app/team" component={Team} />
                     </div>
                 </div>
             </Router>

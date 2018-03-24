@@ -101,6 +101,18 @@ body.app-page {
         cursor: pointer;
     }
 
+    div.user-tile {
+        background-color: lightgrey;
+        height: 120px;
+
+        img.profile {
+            max-width: 100px;
+            max-height: 100px;
+            box-shadow: 2px 2px 2px #aaaaaa;
+            border-radius: 7px;
+        }
+    }
+
     ul.nav.nav-tabs {
         li {
             width: 200px;
