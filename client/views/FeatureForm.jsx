@@ -52,8 +52,8 @@ render () {
                 <input size="50" type="text" name="name" placeholder="ex. Add Github Integration" value={this.state.name} onChange={this.handleChange}/>
                 <br /><br />
                 <div>
-                <label> Description:&nbsp; <br /><br /></label>
-                <input id="desc" type="text" name="description" value={this.state.password} onChange={this.handleChange}/>
+                <label> Description:&nbsp; <br /><br /><br /><br /><br /></label>
+                <textarea name="description" id="desc" cols="30" rows="10"></textarea>
                 </div>
                 <br />
                 <input type="submit" value="Submit Request" className="btn btn-default" />
