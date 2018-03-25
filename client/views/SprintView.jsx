@@ -18,8 +18,7 @@ class SprintView extends React.Component {
     render () {
         if (this.props.display === 'tile') {
             return (<div className="widget sprint-tile">
-                <span className="left"><b>{this.props.item.name}</b></span>
-                <span className="right"><i className="fa fa-user"></i>&nbsp;{this.props.item.owner}</span><br />
+                <span className="left"><b>{this.props.item.name}</b></span><br />
                 <div className="story-count"><b>{this.props.item.storyCount}</b> stories assigned</div>
                 <ProgressBar striped bsStyle={this.getProgressStyle()} now={this.props.item.percent} label={`${this.props.item.percent}%`} />
             </div>);
