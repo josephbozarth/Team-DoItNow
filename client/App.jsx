@@ -1,6 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Button, Nav, Navbar, NavDropdown, MenuItem, NavItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 import UserMenu from './components/UserMenu.jsx';
 
@@ -8,6 +10,7 @@ import Login from './pages/Login.jsx';
 
 import Dashboard from './pages/Dashboard.jsx';
 import SprintPlanning from './pages/SprintPlanning.jsx';
+import Team from './pages/Team.jsx';
 
 const ListItemLink = ({ to, label }) => (
   <Route path={to} children={({ match }) => (
@@ -33,20 +36,35 @@ class App extends React.Component
                         </div>
                     </div>
                     <div className="menu">
-                        <ul>
-                            <ListItemLink to="/app/dashboard" label="Dashboard" />
-                            <ListItemLink to="/app/sprint-planning" label="Sprint Planning" />
-                        </ul>
+                        <Nav bsStyle="pills" activeKey={1}>
+                            <LinkContainer to="/app/dashboard">
+                                <NavItem eventKey={1}>Dashboard</NavItem>
+                            </LinkContainer>
+                            <LinkContainer to="/app/sprint-planning">
+                                <NavItem eventKey={2}>Sprint Planning</NavItem>
+                            </LinkContainer>
+                            <LinkContainer to="/app/team">
+                                <NavItem eventKey={3}>Team</NavItem>
+                            </LinkContainer>
+                        </Nav>
                     </div>
                     <div className="page-container">
                         <Route path="/app/dashboard" component={Dashboard} />
                         <Route path="/app/sprint-planning" component={SprintPlanning} />
+                        <Route path="/app/team" component={Team} />
                     </div>
                 </div>
             </Router>
         );
     }
 }
+
+/*
+                        <ul>
+                            <ListItemLink to="/app/dashboard" label="Dashboard" />
+                            <ListItemLink to="/app/sprint-planning" label="Sprint Planning" />
+                        </ul>
+*/
 
 var app = document.getElementById('app');
 // render the page

@@ -35,6 +35,14 @@ class User():
 		m.update(self.email)
 		self.token = m.digest().encode('hex')
 
+	def serialize(self):
+		ob = {}
+		ob["id"] = self.id
+		ob["email"] = self.email
+		ob["role"] = self.role
+		ob["token"] = self.token
+		return jsonify(ob)
+
 def doLogin(user):
 	user.loggedIn = True
 	if user not in user_table:
@@ -64,7 +72,6 @@ def checkPass(email,passwd):
 	else:
 		return None
 
-
 app = Flask(__name__,static_folder='../client')
 app.config['SECRET_KEY'] = "Super secrey key"
 sqlCon = sqlite3.connect('../agility.db')
@@ -85,15 +92,80 @@ def login():
 		print key, value
 	data = request.json
 	user = checkPass(data['email'],data['password'])
+	print user
 	if user is None:
 		return abort(401)
 	doLogin(user)
-	userData = {}
-	userData['email'] = user.email	
-	userData['role'] = user.role
-	userData['name'] = 'user'
-	return jsonify(token=user.token,user=userData)
+	return user.serialize()
+
+
+#FEATURE APIs
+##CREATE
+@app.route('/api/feature/create') #Input: user_id, name, description. Output: FeatureID
+def create_feature():
+	print "CreateFeature(",request.json,")"
+	data = request.json
+	sqlCursor.execute("INSERT INTO Feature_Request(user_id, name, description) VALUES(?,?,?)", (data.user_id, data.name, data.description))
+	o = {}
+	o["FeatureID"] = cursor.lastrowid
+	return jsonify(o)
 		
+##READ
+###ID
+@app.route('/api/feature/read/featureid') #Input: Feature_ID. Output: Feature_ID, User_id, name, description 
+def read_feature_by_id():
+	print "ReadFeatureByID(",request.json,")"
+	data = request.json
+	sqlCursor.execute("SELECT * FROM Feature_Request WHERE feature_id = ?",(data.feature_id,))
+	f = cursor.fetchone()
+	o = {}
+	o["Feature_id"] = f[0]
+	o["User_id"] = f[1]
+	o["Name"] = f[2]
+	o["Description"] = f[3]
+	return jsonify(o)
+
+###USER
+@app.route('/api/feature/read/userid') #Input: UserID. Output: [Feature_ID, User_id, name, description]
+def read_feature_by_user():
+	print "ReadFeatureByUser(",request.json,")"
+	data = request.json
+	sqlCursor.execute("SELECT * FROM Feature_Request WHERE user_id = ?",(data.user_id,))
+	f = cursor.fetchall()
+	outs = []
+	for feature in f:
+		o = {}
+		o["Feature_id"] = f[0]
+		o["User_id"] = f[1]
+		o["Name"] = f[2]
+		o["Description"] = f[3]
+		outs.append(o)
+	return jsonify(outs)
+
+##UPDATE
+@app.route('/api/feature/update') #This is effectively a replacement so all non-null columns need to be submitted. 
+def update_feature():
+	print "UpdateFeature(",request.json,")"
+	data = request.json
+	sqlCursor.execute("UPDATE Feature_Request SET user_id=?,SET name=?,SET description=?,WHERE feature_id=?",(data.user_id,data.name,data.description,data.feature_id))
+	sqlCursor.execute("SELECT * FROM Feature_Request WHERE feature_id = ?",(data.feature_id,))
+	f = cursor.fetchone()
+	o = {}
+	o["Feature_id"] = f[0]
+	o["User_id"] = f[1]
+	o["Name"] = f[2]
+	o["Description"] = f[3]
+	return jsonify(o)
+
+##DELETE
+@app.route('/api/feature/delete')
+def delete_feature():
+	print "UpdateFeature(",request.json,")"
+	data = request.json
+	sqlCursor.execute("DELETE FROM feature_request WHERE feature_id=?",(data.feature_id,))
+	return "Done"
+
+
 @app.route('/app/logout')
 def logout():
 	logout_user()
@@ -141,10 +213,3 @@ def get_app_home():
 @app.route('/app/<path:path>')
 def get_app(path):
 	return send_from_directory("./","app.html")
-
-@app.route('/api/test')
-def api_test():
-	test = request.args.get('testdata')
-	if test is not None:
-		return jsonify(hello="World",abc=123,floats=0.0001,requestdata=test)
-	return "<h1>Send an argument named testdata</h1>"

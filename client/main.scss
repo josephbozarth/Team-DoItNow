@@ -23,6 +23,12 @@ body.login-page {
 
 body.app-page {
 
+    div.page-container {
+        position: relative;
+        overflow: hidden;
+        padding: 10px;
+    }
+
     div.header {
         padding: 10px;
         overflow: hidden;
@@ -39,36 +45,14 @@ body.app-page {
     }
 
     div.menu {
-        background-color: #ccc;
-        border: 1px solid #777;
-
-        ul {
-            margin: 0;
-            padding: 0;
-        }
+        background-color: #ddddea;
+        padding: 5px;
+        border: 1px solid #aaaaaa;
 
         li {
-            display: inline-block;
             width: 150px;
             text-align: center;
-            border-right: 1px solid #777;
-
-            a {
-                display: inline-block;
-                padding: 10px 0 10px 0;
-                width: 100%;
-                color: blue;
-                text-decoration: none;
-            }
-        }
-
-        li.active {
-            font-weight: bold;
-            background-color: lightblue;
-        }
-
-        li:hover {
-            background-color: #eeeeee;
+            margin: 5px;
         }
     }
 
@@ -77,14 +61,10 @@ body.app-page {
         width: 250px;
         height: 250px;
         padding: 10px;
-        margin: 10px 0 0 10px;
+        margin: 10px 10px 0 0;
         box-shadow: 0 0 3px #aaaaaa;
         background-color: lightgoldenrodyellow;
-    }
 
-    div.story-tile {
-        background-color: lightskyblue;   
-        
         .right{
             float:right;
         }
@@ -93,4 +73,83 @@ body.app-page {
             float:left;
         }
     }
+
+    div.feature-tile {
+        background-color: lightgoldenrodyellow;
+        height: 90px;
+        cursor: pointer;
+
+        .story-count {
+            text-align: center;
+            padding: 5px;
+        }
+    }
+
+    div.sprint-tile {
+        background-color: lightgreen;   
+        height: 90px;
+        cursor: pointer;
+
+        .story-count {
+            text-align: center;
+            padding: 5px;
+        }
+    }
+
+    div.story-tile {
+        background-color: lightskyblue;   
+        cursor: pointer;
+    }
+
+    div.user-tile {
+        background-color: lightgrey;
+        height: 120px;
+
+        img.profile {
+            max-width: 100px;
+            max-height: 100px;
+            box-shadow: 2px 2px 2px #aaaaaa;
+            border-radius: 7px;
+        }
+    }
+
+    ul.nav.nav-tabs {
+        li {
+            width: 200px;
+            text-align: center;
+        }
+    }
+
+    div.tab-container {
+        padding: 10px;
+    }
 }
+
+div.popup {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background-color: rgba(0,0,0, 0.5);
+
+    div.popup_inner {
+        text-align: center;
+        border: 1px solid #aaaaaa;
+        position: fixed;
+        left: 35%;
+        right: 30%;
+        top: 25%;
+        bottom: 25%;
+        margin: auto;
+        background: #dddddd;
+      }
+  }
+
+  #desc {
+    width: 466px;
+    height: 100px;
+  }  

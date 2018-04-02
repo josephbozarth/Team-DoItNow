@@ -2,6 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 
 import WelcomeWidget from '../widgets/WelcomeWidget.jsx';
+import { Button } from 'react-bootstrap';
 
 export default
 class Dashboard extends React.Component {
@@ -16,7 +17,10 @@ class Dashboard extends React.Component {
 
     render () {
         return (<div>
-            <p>Dashboard Page!</p>
+            <h2>Dashboard</h2>
+            <div>
+                <Button><i class="fa fa-plus"></i>&nbsp;Add Widget</Button>
+            </div>
             <div>
                 <WelcomeWidget user={this.state.user} />
             </div>
