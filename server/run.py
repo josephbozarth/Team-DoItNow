@@ -175,7 +175,8 @@ def logout():
 def create_user():
 	print "Create(",request.json,")"
 	data = request.json
-	new_user = sqlCursor.execute("INSERT INTO User (email, password_hash, role) VALUES (?,?,?)", (data.email, data.password, data.role))
+	password_hash = bcrypt.hashpw(data.password, bcrypt.gensalt())
+	new_user = sqlCursor.execute("INSERT INTO User (email, password_hash, role) VALUES (?,?,?)", (data.email, password_hash, data.role))
 	#Checks the return, if it was anything but 0, there was an error
 	if new_user != 0:
 		return "Something went wrong"
@@ -206,7 +207,8 @@ def update_user():
 	print "Update(",request.json,")"
 	data = request.json
 	#Unclear as to what info should be changed with update, but for now the changes are only applying to password and role
-	sqlCursor.execute("UPDATE USER SET password_hash=?, role=?,WHERE email=?",(data.password_hash,data.role,data.email))
+	password_hash = bcrypt.hashpw(data.password, bcrypt.gensalt())
+	sqlCursor.execute("UPDATE USER SET password_hash=?, role=?,WHERE email=?",(password_hash,data.role,data.email))
 	sqlCursor.execute("SELECT * FROM User WHERE email=?", (data.email,))
 	f = cursor.fetchone()
 	o = {}
