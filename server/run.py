@@ -262,7 +262,7 @@ def update_sprint():
 	print "UpdateSprint(",request.json,")"
 	data = request.json
 	#unsure of the actual programming architecture, so think of this statement as pseudo-code for now
-	sqlCursor.execute("UPDATE Sprint SET name=? ,WHERE name=?",(data.new_name,data.old_name))
+	sqlCursor.execute("UPDATE Sprint SET name=? WHERE name=?",(data.new_name,data.old_name))
 	sqlCursor.execute("SELECT * FROM Sprint WHERE name=?", (data.new_name,))
 	f = cursor.fetchone()
 	o = {}
