@@ -99,6 +99,41 @@ def logout():
 	logout_user()
 	return redirect('/')
 
+@app.route('/app/user/create')
+def create_user():
+	print "Create(",request.json,")"
+	for key, value in request.json.iteritems():
+		print key, value
+	data = request.json
+	cursor = sqlCon.cursor()
+	new_user = cursor.execute("INSERT into User (email, password_hash, role) values (?, ?, ?)", (data['email'], data['password'], data['role']))
+	if new_user = None:
+		print "User email is already taken"
+		return abort(401)
+	userData = {}
+	userData['email'] = user.email	
+	userData['role'] = user.role
+	userData['name'] = 'user'
+	return jsonify(token=user.token,user=userData)
+
+@app.route('/app/user/update')
+def create_user():
+	print "Update(",request.json,")"
+	for key, value in request.json.iteritems():
+		print key, value
+	data = request.json
+	cursor = sqlCon.cursor()
+	new_user = cursor.execute("UPDATE User set password_hash = ? where email = ?", (data['password'], data['email'])
+	if new_user = None:
+		print "User email was not found"
+		return abort(401)
+	userData = {}
+	userData['email'] = user.email	
+	userData['role'] = user.role
+	userData['name'] = 'user'
+	return jsonify(token=user.token,user=userData)
+
+
 @app.route('/app')
 def get_app_home():
 	return send_from_directory("./","app.html")
