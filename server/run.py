@@ -147,7 +147,7 @@ def read_feature_by_user():
 def update_feature():
 	print "UpdateFeature(",request.json,")"
 	data = request.json
-	sqlCursor.execute("UPDATE Feature_Request SET user_id=?,SET name=?,SET description=?,WHERE feature_id=?",(data.user_id,data.name,data.description,data.feature_id))
+	sqlCursor.execute("UPDATE Feature_Request SET user_id=?,name=?,description=? WHERE feature_id=?",(data.user_id,data.name,data.description,data.feature_id))
 	sqlCursor.execute("SELECT * FROM Feature_Request WHERE feature_id = ?",(data.feature_id,))
 	f = cursor.fetchone()
 	o = {}
@@ -165,46 +165,171 @@ def delete_feature():
 	sqlCursor.execute("DELETE FROM feature_request WHERE feature_id=?",(data.feature_id,))
 	return "Done"
 
-
 @app.route('/app/logout')
 def logout():
 	logout_user()
 	return redirect('/')
 
+##USER APIs
 @app.route('/app/user/create')
 def create_user():
 	print "Create(",request.json,")"
-	for key, value in request.json.iteritems():
-		print key, value
 	data = request.json
-	cursor = sqlCon.cursor()
-	new_user = cursor.execute("INSERT into User (email, password_hash, role) values (?, ?, ?)", (data['email'], data['password'], data['role']))
-	if new_user = None:
-		print "User email is already taken"
-		return abort(401)
-	userData = {}
-	userData['email'] = user.email	
-	userData['role'] = user.role
-	userData['name'] = 'user'
-	return jsonify(token=user.token,user=userData)
+	new_user = sqlCursor.execute("INSERT INTO User (email, password_hash, role) VALUES (?,?,?)", (data.email, data.password, data.role))
+	#Checks the return, if it was anything but 0, there was an error
+	if new_user != 0:
+		return "Something went wrong"
+	f = cursor.fetchone()
+	o = {}
+	o["email"] = f[0]
+	o["password"] = f[1]
+	o["role"] = f[2]
+	return jsonify(o)
+
+@app.route('/app/user/read')
+def read_user():
+	print "ReadUser(",request.json,")"
+	data = request.json
+	new_user = sqlCursor.execute("SELECT * FROM User WHERE email = ?", (data.email,))
+	#Checks the return, if it was anything but 0, there was an error
+	if new_user != 0:
+		return "Something went wrong"
+	f = cursor.fetchone()
+	o = {}
+	o["email"] = f[0]
+	o["password"] = f[1]
+	o["role"] = f[2]
+	return jsonify(o)
 
 @app.route('/app/user/update')
-def create_user():
+def update_user():
 	print "Update(",request.json,")"
-	for key, value in request.json.iteritems():
-		print key, value
 	data = request.json
-	cursor = sqlCon.cursor()
-	new_user = cursor.execute("UPDATE User set password_hash = ? where email = ?", (data['password'], data['email'])
-	if new_user = None:
-		print "User email was not found"
-		return abort(401)
-	userData = {}
-	userData['email'] = user.email	
-	userData['role'] = user.role
-	userData['name'] = 'user'
-	return jsonify(token=user.token,user=userData)
+	#Unclear as to what info should be changed with update, but for now the changes are only applying to password and role
+	sqlCursor.execute("UPDATE USER SET password_hash=?, role=?,WHERE email=?",(data.password_hash,data.role,data.email))
+	sqlCursor.execute("SELECT * FROM User WHERE email=?", (data.email,))
+	f = cursor.fetchone()
+	o = {}
+	o["email"] = f[0]
+	o["password"] = f[1]
+	o["role"] = f[2]
+	return jsonify(o)
 
+@app.route('/app/user/delete')
+def delete_user():
+	print "DeleteUser(",request.json,")"
+	data = request.json
+	new_user = sqlCursor.execute("DELETE FROM User WHERE email = ?", (data.email,))
+	#Checks the return, if it was anything but 0, there was an error
+	if new_user != 0:
+		return "Something went wrong"
+	f = cursor.fetchone()
+	o = {}
+	o["email"] = f[0]
+	o["password"] = f[1]
+	o["role"] = f[2]
+	return jsonify(o)
+
+##SPRINT APIs
+@app.route('/app/sprint/create')
+def create_sprint():
+	print "CreateSprint(",request.json,")"
+	data = request.json
+	new_user = sqlCursor.execute("INSERT INTO Sprint (name) VALUES (?)", (data.name,))
+	#Checks the return, if it was anything but 0, there was an error
+	if new_user != 0:
+		return "Something went wrong"
+	f = cursor.fetchone()
+	o = {}
+	o["name"] = f[0]
+	return jsonify(o)
+
+@app.route('/app/sprint/read')
+def read_sprint():
+	print "ReadSprint(",request.json,")"
+	data = request.json
+	new_user = sqlCursor.execute("SELECT * FROM Sprint WHERE name = ?", (data.name,))
+	#Checks the return, if it was anything but 0, there was an error
+	if new_user != 0:
+		return "Something went wrong"
+	f = cursor.fetchone()
+	o = {}
+	o["name"] = f[0]
+	return jsonify(o)
+
+@app.route('/app/sprint/update')
+def update_sprint():
+	print "UpdateSprint(",request.json,")"
+	data = request.json
+	#unsure of the actual programming architecture, so think of this statement as pseudo-code for now
+	sqlCursor.execute("UPDATE Sprint SET name=? ,WHERE name=?",(data.new_name,data.old_name))
+	sqlCursor.execute("SELECT * FROM Sprint WHERE name=?", (data.new_name,))
+	f = cursor.fetchone()
+	o = {}
+	o["name"] = f[0]
+	return jsonify(o)
+
+@app.route('/app/sprint/delete')
+def delete_sprint():
+	print "DeleteSprint(",request.json,")"
+	data = request.json
+	new_user = sqlCursor.execute("DELETE FROM Sprint WHERE name = ?", (data.name,))
+	#Checks the return, if it was anything but 0, there was an error
+	if new_user != 0:
+		return "Something went wrong"
+	f = cursor.fetchone()
+	o = {}
+	o["name"] = f[0]
+	return jsonify(o)
+
+##STORY APIs
+@app.route('/app/story/create')
+def create_story():
+	print "CreateStory(",request.json,")"
+	data = request.json
+	new_user = sqlCursor.execute("INSERT INTO Story (feature_id, user_id, sprint_id, name, description) VALUES (?,?,?,?,?)", (data.featureid,data.userid,data.sprintid,data.name, data.description))
+	#Checks the return, if it was anything but 0, there was an error
+	if new_user != 0:
+		return "Something went wrong"
+	f = cursor.fetchone()
+	o = {}
+	o["name"] = f[0]
+	o["user_id"] = f[1]
+	o["sprint_id"] = f[2]
+	o["name"] = f[3]
+	o["description"] = f[4]
+	return jsonify(o)
+
+def update_story():
+	print "UpdateStory(",request.json,")"
+	data = request.json
+	sqlCursor.execute("UPDATE Story SET feature_id=?, user_id=?, sprint_id=?, name=?, description=? WHERE story_id=?",(data.featureid,data.userid,data.sprintid,data.name,data.description,data.storyid))
+	sqlCursor.execute("SELECT * FROM Story WHERE story_id = ?",(data.storyid,))
+	f = cursor.fetchone()
+	o = {}
+	o["name"] = f[0]
+	o["user_id"] = f[1]
+	o["sprint_id"] = f[2]
+	o["name"] = f[3]
+	o["description"] = f[4]
+	return jsonify(o)
+
+@app.route('/app/story/delete')
+def delete_sprint():
+	print "DeleteStory(",request.json,")"
+	data = request.json
+	new_user = sqlCursor.execute("DELETE FROM Story WHERE story_id = ?", (data.storyid,))
+	#Checks the return, if it was anything but 0, there was an error
+	if new_user != 0:
+		return "Something went wrong"
+	f = cursor.fetchone()
+	o = {}
+	o["name"] = f[0]
+	o["user_id"] = f[1]
+	o["sprint_id"] = f[2]
+	o["name"] = f[3]
+	o["description"] = f[4]
+	return jsonify(o)
 
 @app.route('/app')
 def get_app_home():
