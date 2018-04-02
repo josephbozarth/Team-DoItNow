@@ -7,9 +7,6 @@ import bcrypt, md5
 import random
 import simplejson as json
 
-
-SECRET_KEY = 0x14FD61F7510F
-
 user_table = []
 
 class User():
@@ -165,13 +162,13 @@ def delete_feature():
 	sqlCursor.execute("DELETE FROM feature_request WHERE feature_id=?",(data.feature_id,))
 	return "Done"
 
-@app.route('/app/logout')
+@app.route('/api/logout')
 def logout():
 	logout_user()
 	return redirect('/')
 
 ##USER APIs
-@app.route('/app/user/create')
+@app.route('/api/user/create')
 def create_user():
 	print "Create(",request.json,")"
 	data = request.json
@@ -187,7 +184,7 @@ def create_user():
 	o["role"] = f[2]
 	return jsonify(o)
 
-@app.route('/app/user/read')
+@app.route('/api/user/read')
 def read_user():
 	print "ReadUser(",request.json,")"
 	data = request.json
@@ -202,7 +199,7 @@ def read_user():
 	o["role"] = f[2]
 	return jsonify(o)
 
-@app.route('/app/user/update')
+@app.route('/api/user/update')
 def update_user():
 	print "Update(",request.json,")"
 	data = request.json
@@ -217,7 +214,7 @@ def update_user():
 	o["role"] = f[2]
 	return jsonify(o)
 
-@app.route('/app/user/delete')
+@app.route('/api/user/delete')
 def delete_user():
 	print "DeleteUser(",request.json,")"
 	data = request.json
@@ -233,7 +230,7 @@ def delete_user():
 	return jsonify(o)
 
 ##SPRINT APIs
-@app.route('/app/sprint/create')
+@app.route('/api/sprint/create')
 def create_sprint():
 	print "CreateSprint(",request.json,")"
 	data = request.json
@@ -246,7 +243,7 @@ def create_sprint():
 	o["name"] = f[0]
 	return jsonify(o)
 
-@app.route('/app/sprint/read')
+@app.route('/api/sprint/read')
 def read_sprint():
 	print "ReadSprint(",request.json,")"
 	data = request.json
@@ -259,7 +256,7 @@ def read_sprint():
 	o["name"] = f[0]
 	return jsonify(o)
 
-@app.route('/app/sprint/update')
+@app.route('/api/sprint/update')
 def update_sprint():
 	print "UpdateSprint(",request.json,")"
 	data = request.json
@@ -271,7 +268,7 @@ def update_sprint():
 	o["name"] = f[0]
 	return jsonify(o)
 
-@app.route('/app/sprint/delete')
+@app.route('/api/sprint/delete')
 def delete_sprint():
 	print "DeleteSprint(",request.json,")"
 	data = request.json
@@ -285,7 +282,7 @@ def delete_sprint():
 	return jsonify(o)
 
 ##STORY APIs
-@app.route('/app/story/create')
+@app.route('/api/story/create')
 def create_story():
 	print "CreateStory(",request.json,")"
 	data = request.json
@@ -302,6 +299,7 @@ def create_story():
 	o["description"] = f[4]
 	return jsonify(o)
 
+@app.route('/api/story/update')
 def update_story():
 	print "UpdateStory(",request.json,")"
 	data = request.json
@@ -316,7 +314,7 @@ def update_story():
 	o["description"] = f[4]
 	return jsonify(o)
 
-@app.route('/app/story/delete')
+@app.route('/api/story/delete')
 def delete_sprint():
 	print "DeleteStory(",request.json,")"
 	data = request.json
