@@ -315,7 +315,7 @@ def update_story():
 	return jsonify(o)
 
 @app.route('/api/story/delete')
-def delete_sprint():
+def delete_story():
 	print "DeleteStory(",request.json,")"
 	data = request.json
 	new_user = sqlCursor.execute("DELETE FROM Story WHERE story_id = ?", (data.storyid,))
