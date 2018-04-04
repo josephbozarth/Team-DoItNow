@@ -104,7 +104,7 @@ def create_feature():
 	data = request.json
 	sqlCursor.execute("INSERT INTO Feature_Request(user_id, name, description) VALUES(?,?,?)", (data.user_id, data.name, data.description))
 	o = {}
-	o["FeatureID"] = cursor.lastrowid
+	o["feature_id"] = cursor.lastrowid
 	return jsonify(o)
 		
 ##READ
@@ -116,10 +116,10 @@ def read_feature_by_id():
 	sqlCursor.execute("SELECT * FROM Feature_Request WHERE feature_id = ?",(data.feature_id,))
 	f = cursor.fetchone()
 	o = {}
-	o["Feature_id"] = f[0]
-	o["User_id"] = f[1]
-	o["Name"] = f[2]
-	o["Description"] = f[3]
+	o["feature_id"] = f[0]
+	o["user_id"] = f[1]
+	o["name"] = f[2]
+	o["description"] = f[3]
 	return jsonify(o)
 
 ###USER
@@ -160,7 +160,9 @@ def delete_feature():
 	print "UpdateFeature(",request.json,")"
 	data = request.json
 	sqlCursor.execute("DELETE FROM feature_request WHERE feature_id=?",(data.feature_id,))
-	return "Done"
+	o = {}
+	o["status"] = "Done"
+	return o
 
 @app.route('/api/logout')
 def logout():
@@ -177,11 +179,8 @@ def create_user():
 	#Checks the return, if it was anything but 0, there was an error
 	if new_user != 0:
 		return "Something went wrong"
-	f = cursor.fetchone()
 	o = {}
-	o["email"] = f[0]
-	o["password"] = f[1]
-	o["role"] = f[2]
+	o["user_id"] = cursor.lastrowid
 	return jsonify(o)
 
 @app.route('/api/user/read')
@@ -194,9 +193,9 @@ def read_user():
 		return "Something went wrong"
 	f = cursor.fetchone()
 	o = {}
-	o["email"] = f[0]
-	o["password"] = f[1]
-	o["role"] = f[2]
+	o["user_id"] = f[0]
+	o["email"] = f[1]
+	o["role"] = f[3]
 	return jsonify(o)
 
 @app.route('/api/user/update')
@@ -209,9 +208,10 @@ def update_user():
 	sqlCursor.execute("SELECT * FROM User WHERE email=?", (data.email,))
 	f = cursor.fetchone()
 	o = {}
-	o["email"] = f[0]
-	o["password"] = f[1]
-	o["role"] = f[2]
+	o["user_id"] = f[0]
+	o["email"] = f[1]
+	o["password"] = f[2]
+	o["role"] = f[3]
 	return jsonify(o)
 
 @app.route('/api/user/delete')

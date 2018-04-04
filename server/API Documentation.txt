@@ -1,0 +1,246 @@
+How to Use APIs:
+
+Send a JSON request with the required data to the URL listed and the server will respond with JSON data or an error message.
+
+
+Feature Request:
+    Create:
+        Adds a row to the Feature Request Table
+        URL:
+            '/api/feature/create'
+        Input:
+            {
+                user_id : int,
+                name : string,
+                description : string
+            }
+        Output:
+            {
+                feature_id : int
+            }
+
+    Read By Feature ID:
+        Gets a Feature Request Row given the Feature Request ID
+        URL:
+            '/api/feature/read/featureid'
+        Input:
+            {
+                feature_id : int
+            }
+        Output:
+            {
+                feature_id : int,
+                user_id : int,
+                name : string,
+                description : string
+            }
+
+    Read By Story ID:
+        Gets all of the Feature Request Rows given the User ID
+        URL:
+            '/api/feature/read/userid'
+        Input:
+            {
+                user_id : int
+            }
+        Output:
+            {
+                [
+                    {
+                        feature_id : int,
+                        user_id : int,
+                        name : string,
+                        description : string
+                    },...
+                ]
+            }
+
+    Update:
+        Updates a Feature Request
+        URL:
+            '/api/feature/update'
+        Input:
+            {
+                feature_id : int
+            }
+        Output:
+            {
+                feature_id : int,
+                user_id : int,
+                name : string,
+                description : string
+            }
+
+    Delete:
+        Deletes a Feature Request
+        URL:
+            '/api/feature/delete'
+        Input:
+            {
+                feature_id : int
+            }
+        Output:
+            {
+                status : string
+            }
+
+
+User:
+    Create:
+        Adds a row to the User Table
+        URL:
+            '/api/user/create'
+        Input:
+            {
+                email : string,
+                password : string,
+                role : string
+            }
+        Output:
+            {
+                user_id : int
+            }
+
+    Read:
+        Gets a User Row given the User ID
+        URL:
+            '/api/user/read'
+        Input:
+            {
+                email : string
+            }
+        Output:
+            {
+                user_id : int,
+                email : string,
+                role : string
+            }
+
+    Update:
+        Updates a User
+        URL:
+            '/api/user/update'
+        Input:
+            {
+                user_id : int,
+                email : string,
+                password : string,
+                role : string
+            }
+        Output:
+            {
+                user_id : int,
+                email : string,
+                password_hash : string,
+                role : string
+            }
+
+    Delete:
+Sprint:
+    Create:
+        Adds a row to the Sprint Table
+        URL:
+            '/api/sprint/create'
+        Input:
+            {
+                name : string
+            }
+        Output:
+            {
+                sprint_id : int
+            }
+
+    Read:
+        Gets a Sprint Row given the Sprint Name
+        URL:
+            '/api/sprint/read'
+        Input:
+            {
+                name : string
+            }
+        Output:
+            {
+                sprint_id : int
+            }
+
+    Update:
+        Updates a Sprint
+        URL:
+            '/api/sprint/update'
+        Input:
+            {
+                sprint_id : int,
+                name : string
+            }
+        Output:
+            {
+                sprint_id : int,
+                name : string
+            }
+
+    Delete:
+        Deletes a Sprint
+        URL:
+            '/api/sprint/delete'
+        Input:
+            {
+                sprint_id : int
+            }
+        Output:
+            {
+                status : string
+            }
+
+Story:
+    Create:
+        Adds a row to the Story Table
+        URL:
+            '/api/story/create'
+        Input:
+            {
+                feature_id : int,
+                user_id : int,
+                sprint_id : int,
+                name : string,
+                description : string
+            }
+        Output:
+            {
+                story_id : int
+            }
+
+    Update:
+        Updates a Story
+        URL:
+            '/api/story/update'
+        Input:
+            {
+                story_id : int,
+                feature_id : int,
+                user_id : int,
+                sprint_id : int,
+                name : string,
+                description : string
+            }
+        Output:
+            {
+                story_id : int,
+                feature_id : int,
+                user_id : int,
+                sprint_id : int,
+                name : string,
+                description : string
+            }
+
+    Delete:
+        Deletes a Story
+        URL:
+            '/api/story/delete'
+        Input:
+            {
+                story_id : int
+            }
+        Output:
+            {
+                status : string
+            }
