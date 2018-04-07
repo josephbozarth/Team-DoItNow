@@ -7,13 +7,17 @@ import FeatureView from '../views/FeatureView.jsx'
 import SprintView from '../views/SprintView.jsx'
 import StoryView from '../views/StoryView.jsx';
 
+import {getFeatures} from '../api/feature';
+
 export default
 class SprintPlanning extends React.Component {
 
     constructor (props) {
         super(props);
-        this.state = {
-            features: [
+        this.state = {};
+
+        /*function getFeatures() {
+            return Promise.resolve([
                 {
                     name: "Feature 1",
                     owner: "Test Owner 1",
@@ -32,8 +36,11 @@ class SprintPlanning extends React.Component {
                     percent: 100,
                     storyCount: 3,
                 },
-            ],
-            sprints: [
+            ]);
+        }*/
+
+        function getSprints() {
+            return Promise.resolve([
                 {
                     name: "Sprint 1",
                     owner: "Test Owner 1",
@@ -53,8 +60,11 @@ class SprintPlanning extends React.Component {
                     storyCount: 9,
                     percent: 0
                 },
-            ],
-            stories: [
+            ]);
+        }
+
+        function getStories() {
+            return Promise.resolve([
                 {
                     name: "Test Story 1",
                     owner: "Test Owner 1",
@@ -70,8 +80,14 @@ class SprintPlanning extends React.Component {
                     owner: "Test Owner 3",
                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 },
-            ]
-        };
+            ]);
+        }
+
+        Promise.all([
+            getFeatures(),
+            getSprints(),
+            getStories()
+        ]).then(([ features, sprints, stories ]) => this.setState({ features, sprints, stories }));
     }
 
     render () {
@@ -82,17 +98,17 @@ class SprintPlanning extends React.Component {
                 <Tab eventKey={1} title="Feature Requests">
                     <div className="tab-container">
                         <FeatureForm /> 
-                        {this.state.features.map(f => <FeatureView item={f} display="tile" />)}
+                        {(this.state.features || []).map(f => <FeatureView item={f} display="tile" />)}
                     </div>   
                 </Tab>
                 <Tab eventKey={2} title="Sprints">
                     <div className="tab-container">
-                        {this.state.sprints.map(s => <SprintView item={s} display="tile" />)}
+                        {(this.state.sprints || []).map(s => <SprintView item={s} display="tile" />)}
                     </div>   
                 </Tab>
                 <Tab eventKey={3} title="Stories">
                     <div className="tab-container">
-                        {this.state.stories.map(story => <StoryView item={story} display="tile" />)}
+                        {(this.state.stories || []).map(story => <StoryView item={story} display="tile" />)}
                     </div>   
                 </Tab>
             </Tabs>

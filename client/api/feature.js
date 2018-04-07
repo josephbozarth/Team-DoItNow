@@ -21,6 +21,11 @@ function getFeatureStories(token, id) {
     .then(res => res.data);
 }
 
+function createFeature(token, feature) {
+  return api.post(`${FEATURE_API}/create`, feature, config(token))
+    .then(res => res.data);
+}
+
 module.exports = {
-    getFeatures, getFeature, getFeatureStories
+    getFeatures, getFeature, getFeatureStories, createFeature
 };

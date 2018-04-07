@@ -98,14 +98,31 @@ def login():
 
 #FEATURE APIs
 ##CREATE
-@app.route('/api/feature/create') #Input: user_id, name, description. Output: FeatureID
+@app.route('/api/feature/create', methods=['POST']) #Input: user_id, name, description. Output: FeatureID
 def create_feature():
 	print "CreateFeature(",request.json,")"
 	data = request.json
 	sqlCursor.execute("INSERT INTO Feature_Request(user_id, name, description) VALUES(?,?,?)", (data.user_id, data.name, data.description))
 	o = {}
-	o["FeatureID"] = cursor.lastrowid
+	o["FeatureID"] = sqlCursor.lastrowid
 	return jsonify(o)
+
+##READ
+@app.route('/api/feature') #Output: [Feature_ID, User_id, name, description]
+def read_features():
+	print "ReadFeatures(",request.json,")"
+	data = request.json
+	sqlCursor.execute("SELECT * FROM Feature_Request")
+	f = sqlCursor.fetchall()
+	outs = []
+	for feature in f:
+		o = {}
+		o["id"] = f[0]
+		o["userid"] = f[1]
+		o["name"] = f[2]
+		o["description"] = f[3]
+		outs.append(o)
+	return jsonify(outs)
 		
 ##READ
 ###ID
@@ -114,7 +131,7 @@ def read_feature_by_id():
 	print "ReadFeatureByID(",request.json,")"
 	data = request.json
 	sqlCursor.execute("SELECT * FROM Feature_Request WHERE feature_id = ?",(data.feature_id,))
-	f = cursor.fetchone()
+	f = sqlCursor.fetchone()
 	o = {}
 	o["Feature_id"] = f[0]
 	o["User_id"] = f[1]
@@ -128,7 +145,7 @@ def read_feature_by_user():
 	print "ReadFeatureByUser(",request.json,")"
 	data = request.json
 	sqlCursor.execute("SELECT * FROM Feature_Request WHERE user_id = ?",(data.user_id,))
-	f = cursor.fetchall()
+	f = sqlCursor.fetchall()
 	outs = []
 	for feature in f:
 		o = {}
@@ -140,13 +157,13 @@ def read_feature_by_user():
 	return jsonify(outs)
 
 ##UPDATE
-@app.route('/api/feature/update') #This is effectively a replacement so all non-null columns need to be submitted. 
+@app.route('/api/feature/update', methods=['POST']) #This is effectively a replacement so all non-null columns need to be submitted. 
 def update_feature():
 	print "UpdateFeature(",request.json,")"
 	data = request.json
 	sqlCursor.execute("UPDATE Feature_Request SET user_id=?,name=?,description=? WHERE feature_id=?",(data.user_id,data.name,data.description,data.feature_id))
 	sqlCursor.execute("SELECT * FROM Feature_Request WHERE feature_id = ?",(data.feature_id,))
-	f = cursor.fetchone()
+	f = sqlCursor.fetchone()
 	o = {}
 	o["Feature_id"] = f[0]
 	o["User_id"] = f[1]
@@ -164,7 +181,7 @@ def delete_feature():
 
 @app.route('/api/logout')
 def logout():
-	logout_user()
+	doLogout()
 	return redirect('/')
 
 ##USER APIs
@@ -177,7 +194,7 @@ def create_user():
 	#Checks the return, if it was anything but 0, there was an error
 	if new_user != 0:
 		return "Something went wrong"
-	f = cursor.fetchone()
+	f = sqlCursor.fetchone()
 	o = {}
 	o["email"] = f[0]
 	o["password"] = f[1]
@@ -192,7 +209,7 @@ def read_user():
 	#Checks the return, if it was anything but 0, there was an error
 	if new_user != 0:
 		return "Something went wrong"
-	f = cursor.fetchone()
+	f = sqlCursor.fetchone()
 	o = {}
 	o["email"] = f[0]
 	o["password"] = f[1]
@@ -207,7 +224,7 @@ def update_user():
 	password_hash = bcrypt.hashpw(data.password, bcrypt.gensalt())
 	sqlCursor.execute("UPDATE USER SET password_hash=?, role=?,WHERE email=?",(password_hash,data.role,data.email))
 	sqlCursor.execute("SELECT * FROM User WHERE email=?", (data.email,))
-	f = cursor.fetchone()
+	f = sqlCursor.fetchone()
 	o = {}
 	o["email"] = f[0]
 	o["password"] = f[1]
@@ -222,7 +239,7 @@ def delete_user():
 	#Checks the return, if it was anything but 0, there was an error
 	if new_user != 0:
 		return "Something went wrong"
-	f = cursor.fetchone()
+	f = sqlCursor.fetchone()
 	o = {}
 	o["email"] = f[0]
 	o["password"] = f[1]
@@ -238,7 +255,7 @@ def create_sprint():
 	#Checks the return, if it was anything but 0, there was an error
 	if new_user != 0:
 		return "Something went wrong"
-	f = cursor.fetchone()
+	f = sqlCursor.fetchone()
 	o = {}
 	o["name"] = f[0]
 	return jsonify(o)
@@ -251,7 +268,7 @@ def read_sprint():
 	#Checks the return, if it was anything but 0, there was an error
 	if new_user != 0:
 		return "Something went wrong"
-	f = cursor.fetchone()
+	f = sqlCursor.fetchone()
 	o = {}
 	o["name"] = f[0]
 	return jsonify(o)
@@ -263,7 +280,7 @@ def update_sprint():
 	#unsure of the actual programming architecture, so think of this statement as pseudo-code for now
 	sqlCursor.execute("UPDATE Sprint SET name=? WHERE name=?",(data.new_name,data.old_name))
 	sqlCursor.execute("SELECT * FROM Sprint WHERE name=?", (data.new_name,))
-	f = cursor.fetchone()
+	f = sqlCursor.fetchone()
 	o = {}
 	o["name"] = f[0]
 	return jsonify(o)
@@ -276,7 +293,7 @@ def delete_sprint():
 	#Checks the return, if it was anything but 0, there was an error
 	if new_user != 0:
 		return "Something went wrong"
-	f = cursor.fetchone()
+	f = sqlCursor.fetchone()
 	o = {}
 	o["name"] = f[0]
 	return jsonify(o)
@@ -290,7 +307,7 @@ def create_story():
 	#Checks the return, if it was anything but 0, there was an error
 	if new_user != 0:
 		return "Something went wrong"
-	f = cursor.fetchone()
+	f = sqlCursor.fetchone()
 	o = {}
 	o["name"] = f[0]
 	o["user_id"] = f[1]
@@ -305,7 +322,7 @@ def update_story():
 	data = request.json
 	sqlCursor.execute("UPDATE Story SET feature_id=?, user_id=?, sprint_id=?, name=?, description=? WHERE story_id=?",(data.featureid,data.userid,data.sprintid,data.name,data.description,data.storyid))
 	sqlCursor.execute("SELECT * FROM Story WHERE story_id = ?",(data.storyid,))
-	f = cursor.fetchone()
+	f = sqlCursor.fetchone()
 	o = {}
 	o["name"] = f[0]
 	o["user_id"] = f[1]
@@ -322,7 +339,7 @@ def delete_story():
 	#Checks the return, if it was anything but 0, there was an error
 	if new_user != 0:
 		return "Something went wrong"
-	f = cursor.fetchone()
+	f = sqlCursor.fetchone()
 	o = {}
 	o["name"] = f[0]
 	o["user_id"] = f[1]
