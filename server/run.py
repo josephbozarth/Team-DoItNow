@@ -122,7 +122,7 @@ def read_features():
 		o["name"] = f[2]
 		o["description"] = f[3]
 		outs.append(o)
-	return jsonify(outs)
+	return json.dumps(outs)
 		
 ##READ
 ###ID
@@ -154,7 +154,7 @@ def read_feature_by_user():
 		o["Name"] = f[2]
 		o["Description"] = f[3]
 		outs.append(o)
-	return jsonify(outs)
+	return json.dumps(outs)
 
 ##UPDATE
 @app.route('/api/feature/update', methods=['POST']) #This is effectively a replacement so all non-null columns need to be submitted. 
