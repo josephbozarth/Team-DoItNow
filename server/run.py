@@ -83,6 +83,7 @@ def get_login():
 	return send_from_directory("./","login.html")
 
 @app.route('/api/user/session', methods=['POST'])
+
 def login():
 	print "Login(",request.json,")"
 	for key, value in request.json.iteritems():
@@ -95,42 +96,59 @@ def login():
 	doLogin(user)
 	return user.serialize()
 
+@app.route('/api/user/session', methods=['DELETE'])
+def logout():
+	#doLogout() # NOTE: This needs an instance of User to work. There is a serialize() but no deserialize() so not sure how to get this object back after the last request dies.
+	return redirect('/')
 
 #FEATURE APIs
 ##CREATE
-@app.route('/api/feature/create', methods=['POST']) #Input: user_id, name, description. Output: FeatureID
+@app.route('/api/feature', methods=['POST']) #Input: userId, name, description. Output: id
 def create_feature():
 	print "CreateFeature(",request.json,")"
 	data = request.json
-	sqlCursor.execute("INSERT INTO Feature_Request(user_id, name, description) VALUES(?,?,?)", (data.user_id, data.name, data.description))
-	o = {}
-	o["FeatureID"] = sqlCursor.lastrowid
-	return jsonify(o)
+	sqlCursor.execute("INSERT INTO Feature_Request(user_id, name, description) VALUES(?,?,?)", (data['userId'], data['name'], data['description']))
+	data['id'] = sqlCursor.lastrowid
+	return jsonify(data)
 
 ##READ
-@app.route('/api/feature') #Output: [Feature_ID, User_id, name, description]
+@app.route('/api/feature') #Output: [id, userId, name, description]
 def read_features():
 	print "ReadFeatures(",request.json,")"
-	data = request.json
-	sqlCursor.execute("SELECT * FROM Feature_Request")
+	sqlCursor.execute("""
+ 	 SELECT 
+	   fr.feature_id,
+	   fr.user_id,
+	   u.email as user_email,
+	   fr.name,
+	   fr.description,
+	   count(DISTINCT s.story_id) as storyCount,
+	   0 as completedStories
+	 FROM Feature_Request fr
+	    inner join User u on fr.user_id = u.user_id
+		left outer join Story s on fr.feature_id = s.feature_id
+		group by fr.feature_id, fr.user_id, fr.name, fr.description
+	 """)
 	f = sqlCursor.fetchall()
 	outs = []
 	for feature in f:
 		o = {}
-		o["id"] = f[0]
-		o["userid"] = f[1]
-		o["name"] = f[2]
-		o["description"] = f[3]
+		o["id"] = feature[0]
+		o["userId"] = feature[1]
+		o["userEmail"] = feature[2]
+		o["name"] = feature[3]
+		o["description"] = feature[4]
+		o["storyCount"] = feature[5]
+		o["completedStories"] = feature[6]
 		outs.append(o)
-	return json.dumps(outs)
+	return jsonify(outs)
 		
 ##READ
 ###ID
-@app.route('/api/feature/read/featureid') #Input: Feature_ID. Output: Feature_ID, User_id, name, description 
-def read_feature_by_id():
-	print "ReadFeatureByID(",request.json,")"
-	data = request.json
-	sqlCursor.execute("SELECT * FROM Feature_Request WHERE feature_id = ?",(data.feature_id,))
+@app.route('/api/feature/<id>') #Input: Feature_ID. Output: Feature_ID, User_id, name, description 
+def read_feature_by_id(id):
+	print "ReadFeatureByID(",id,")"
+	sqlCursor.execute("SELECT * FROM Feature_Request WHERE feature_id = ?",(id))
 	f = sqlCursor.fetchone()
 	o = {}
 	o["Feature_id"] = f[0]
@@ -140,49 +158,35 @@ def read_feature_by_id():
 	return jsonify(o)
 
 ###USER
-@app.route('/api/feature/read/userid') #Input: UserID. Output: [Feature_ID, User_id, name, description]
-def read_feature_by_user():
-	print "ReadFeatureByUser(",request.json,")"
-	data = request.json
-	sqlCursor.execute("SELECT * FROM Feature_Request WHERE user_id = ?",(data.user_id,))
+@app.route('/api/user/<userId>/feature') #Input: UserID. Output: [Feature_ID, User_id, name, description]
+def read_feature_by_user(userId):
+	print "ReadFeatureByUser(",userId,")"
+	sqlCursor.execute("SELECT * FROM Feature_Request WHERE user_id = ?",(userId))
 	f = sqlCursor.fetchall()
 	outs = []
 	for feature in f:
 		o = {}
-		o["Feature_id"] = f[0]
-		o["User_id"] = f[1]
-		o["Name"] = f[2]
-		o["Description"] = f[3]
+		o["id"] = feature[0]
+		o["userId"] = feature[1]
+		o["name"] = feature[2]
+		o["description"] = feature[3]
 		outs.append(o)
 	return json.dumps(outs)
 
 ##UPDATE
-@app.route('/api/feature/update', methods=['POST']) #This is effectively a replacement so all non-null columns need to be submitted. 
+@app.route('/api/feature', methods=['PUT']) #This is effectively a replacement so all non-null columns need to be submitted. 
 def update_feature():
 	print "UpdateFeature(",request.json,")"
 	data = request.json
-	sqlCursor.execute("UPDATE Feature_Request SET user_id=?,name=?,description=? WHERE feature_id=?",(data.user_id,data.name,data.description,data.feature_id))
-	sqlCursor.execute("SELECT * FROM Feature_Request WHERE feature_id = ?",(data.feature_id,))
-	f = sqlCursor.fetchone()
-	o = {}
-	o["Feature_id"] = f[0]
-	o["User_id"] = f[1]
-	o["Name"] = f[2]
-	o["Description"] = f[3]
-	return jsonify(o)
+	sqlCursor.execute("UPDATE Feature_Request SET user_id=?,name=?,description=? WHERE feature_id=?",(data['userId'], data['name'], data['description'], data['id']))
+	return jsonify(data)
 
 ##DELETE
-@app.route('/api/feature/delete')
-def delete_feature():
-	print "UpdateFeature(",request.json,")"
-	data = request.json
-	sqlCursor.execute("DELETE FROM feature_request WHERE feature_id=?",(data.feature_id,))
-	return "Done"
-
-@app.route('/api/logout')
-def logout():
-	doLogout()
-	return redirect('/')
+@app.route('/api/feature/<id>', methods=['DELETE'])
+def delete_feature(id):
+	print "DeleteFeature(",id,")"
+	sqlCursor.execute("DELETE FROM feature_request WHERE feature_id=?",(id,))
+	return jsonify({})
 
 ##USER APIs
 @app.route('/api/user/create')
@@ -303,7 +307,7 @@ def delete_sprint():
 def create_story():
 	print "CreateStory(",request.json,")"
 	data = request.json
-	new_user = sqlCursor.execute("INSERT INTO Story (feature_id, user_id, sprint_id, name, description) VALUES (?,?,?,?,?)", (data.featureid,data.userid,data.sprintid,data.name, data.description))
+	new_user = sqlCursor.execute("INSERT INTO Story (feature_id, user_id, sprint_id, name, description) VALUES (?,?,?,?,?)", (data.featureid,data.userId,data.sprintid,data.name, data.description))
 	#Checks the return, if it was anything but 0, there was an error
 	if new_user != 0:
 		return "Something went wrong"
@@ -320,7 +324,7 @@ def create_story():
 def update_story():
 	print "UpdateStory(",request.json,")"
 	data = request.json
-	sqlCursor.execute("UPDATE Story SET feature_id=?, user_id=?, sprint_id=?, name=?, description=? WHERE story_id=?",(data.featureid,data.userid,data.sprintid,data.name,data.description,data.storyid))
+	sqlCursor.execute("UPDATE Story SET feature_id=?, user_id=?, sprint_id=?, name=?, description=? WHERE story_id=?",(data.featureid,data.userId,data.sprintid,data.name,data.description,data.storyid))
 	sqlCursor.execute("SELECT * FROM Story WHERE story_id = ?",(data.storyid,))
 	f = sqlCursor.fetchone()
 	o = {}

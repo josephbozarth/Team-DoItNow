@@ -1,7 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
 
-import userApi from '../api/user';
+import {login} from '../api/user';
+import {signOn} from '../api/session';
 
 const ErrorMessage = () => (<div className="error-message">The specified email/password was not correct.</div>);
 
@@ -31,13 +32,7 @@ class Dashboard extends React.Component {
     }
 
     handleSubmit(event) {
-        userApi.login(this.state.email, this.state.password)
-            .then(login => {
-                window.sessionStorage.agilityUser = JSON.stringify(login);
-                window.sessionStorage.agilityToken = login.token;
-                
-                window.location = '/app/dashboard';
-            })
+        login(this.state.email, this.state.password).then(signOn)
             .catch(err => {
                 this.setState({ isLoginError: true });
             });

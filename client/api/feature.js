@@ -1,31 +1,42 @@
 import api from 'axios';
+import {getToken} from './session';
 
 const FEATURE_API = '/api/feature';
 
-function config(token) {
-  return { headers: { 'X-Agility-Token': token } };
+function config() {
+  return { headers: { 'X-Agility-Token': getToken() } };
 }
 
-function getFeatures(token) {
-  return api.get(`${FEATURE_API}`, config(token))
+function getFeatures() {
+  return api.get(`${FEATURE_API}`, config())
     .then(res => res.data);
 }
 
-function getFeature(token, id) {
-  return api.get(`${FEATURE_API}/${id}`, config(token))
+function getFeature(id) {
+  return api.get(`${FEATURE_API}/${id}`, config())
     .then(res => res.data);
 }
 
-function getFeatureStories(token, id) {
-  return api.get(`${FEATURE_API}/${id}/story`, config(token))
+function getFeatureStories(id) {
+  return api.get(`${FEATURE_API}/${id}/story`, config())
     .then(res => res.data);
 }
 
-function createFeature(token, feature) {
-  return api.post(`${FEATURE_API}/create`, feature, config(token))
+function createFeature(feature) {
+  return api.post(`${FEATURE_API}`, feature, config())
+    .then(res => res.data);
+}
+
+function updateFeature(feature) {
+  return api.put(`${FEATURE_API}`, feature, config())
+    .then(res => res.data);
+}
+
+function deleteFeature(id) {
+  return api.delete(`${FEATURE_API}/${id}`, config())
     .then(res => res.data);
 }
 
 module.exports = {
-    getFeatures, getFeature, getFeatureStories, createFeature
+    getFeatures, getFeature, getFeatureStories, createFeature, updateFeature, deleteFeature
 };

@@ -1,20 +1,16 @@
 import React from 'react';
 import {render} from 'react-dom';
 
+import {getSessionUser, signOn, signOff} from '../api/session';
+
 export default
 class UserMenu extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            user: JSON.parse(window.sessionStorage.agilityUser)
+            user: getSessionUser()
         };
-    }
-
-    doSignOut() {
-        window.sessionStorage.agilityUser = null;
-        window.sessionStorage.agilityToken = null;
-        window.location = '/';
     }
 
     render () {
@@ -22,7 +18,7 @@ class UserMenu extends React.Component {
             return (<div className="user-menu">
                 <i className="fa fa-user" />&nbsp;{this.state.user.email}<br />
                 <b>{this.state.user.role}</b><br />
-                [<a href="#" onClick={this.doSignOut}>Sign Out</a>]
+                [<a href="#" onClick={signOff}>Sign Out</a>]
             </div>);
         }
         else {

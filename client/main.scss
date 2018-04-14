@@ -59,7 +59,6 @@ body.app-page {
     div.widget {
         float: left;
         width: 250px;
-        height: 250px;
         padding: 10px;
         margin: 10px 10px 0 0;
         box-shadow: 0 0 3px #aaaaaa;
@@ -72,11 +71,17 @@ body.app-page {
         .left{
             float:left;
         }
+
+        .title {
+            width: calc(250px - 20px);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 
     div.feature-tile {
         background-color: lightgoldenrodyellow;
-        height: 90px;
         cursor: pointer;
 
         .story-count {
@@ -138,15 +143,21 @@ div.popup {
 
     div.popup_inner {
         text-align: center;
-        border: 1px solid #aaaaaa;
+        border: 1px solid rgba(0,0,0,.2);
+        border-radius: 6px;
+        box-shadow: 0 5px 15px rgba(0,0,0,.5);
         position: fixed;
         left: 35%;
         right: 30%;
         top: 25%;
-        bottom: 25%;
         margin: auto;
-        background: #dddddd;
-      }
+        background: white;
+        .footer {
+            padding-right: 10px;
+            padding-bottom: 10px;
+            text-align: right;
+        }
+    }
   }
 
   #desc {
