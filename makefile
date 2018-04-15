@@ -17,20 +17,20 @@ endif
 
 # Creates a sqlite3 database file with the schema pre-configured
 database: sqlite3_check
-	sqlite3 agility.db ".read db/schema.sql" 
+	sqlite3 agility.db ".read db/schema.sql"
 	sqlite3 agility.db "PRAGMA foreign_keys = TRUE;"
 
 # Test data for db
 testDB: database
 	sqlite3 agility.db ".read db/test.sql"
-	
+
 client_install:
 	cd client && npm install
 
 webserver: flask_check
 	$(info Installing Webserver....)
 
-python_check: 
+python_check:
 	$(info Checking if Pip is installed....)
 ifndef PIP
 	$(error pip 2.7 not installed)
@@ -45,12 +45,14 @@ ifndef FLASK
 endif
 	$(info Flask found)
 
+#execute ngrok to expose our server to github
+webhook_serv:
+	./ngrok http 4567
+
 # Runs PIP and any other required package managers to install third-party dependencies.
 install: database client_install webserver
 	@echo "Installing...." && sleep 2 && echo "done!"
 
 # Runs the project
-run: 
+run:
 	@echo "run the app!"
-
-
