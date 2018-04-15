@@ -123,7 +123,10 @@ def read_features():
 	   fr.name,
 	   fr.description,
 	   count(DISTINCT s.story_id) as storyCount,
-	   0 as completedStories
+	   sum(CASE WHEN s.story_status_id = 'A' THEN 1 ELSE 0 END) as acceptedStories,
+	   sum(CASE WHEN s.story_status_id = 'C' THEN 1 ELSE 0 END) as completedStories,
+	   sum(CASE WHEN s.story_status_id = 'I' THEN 1 ELSE 0 END) as inWorkStories,
+	   sum(CASE WHEN s.story_status_id = 'P' THEN 1 ELSE 0 END) as pendingStories
 	 FROM Feature_Request fr
 	    inner join User u on fr.user_id = u.user_id
 		left outer join Story s on fr.feature_id = s.feature_id
@@ -139,7 +142,10 @@ def read_features():
 		o["name"] = feature[3]
 		o["description"] = feature[4]
 		o["storyCount"] = feature[5]
-		o["completedStories"] = feature[6]
+		o["acceptedStories"] = feature[6]
+		o["completedStories"] = feature[7]
+		o["inWorkStories"] = feature[8]
+		o["pendingStories"] = feature[9]
 		outs.append(o)
 	return jsonify(outs)
 		
@@ -264,19 +270,37 @@ def create_sprint():
 	o["name"] = f[0]
 	return jsonify(o)
 
-@app.route('/api/sprint/read')
-def read_sprint():
-	print "ReadSprint(",request.json,")"
-	data = request.json
-	new_user = sqlCursor.execute("SELECT * FROM Sprint WHERE name = ?", (data.name,))
-	#Checks the return, if it was anything but 0, there was an error
-	if new_user != 0:
-		return "Something went wrong"
-	f = sqlCursor.fetchone()
-	o = {}
-	o["name"] = f[0]
-	return jsonify(o)
-
+##READ
+@app.route('/api/sprint') #Output: [id, userId, name, description]
+def read_sprints():
+	print "ReadSprints(",request.json,")"
+	sqlCursor.execute("""
+ 	 SELECT 
+	   sp.sprint_id,
+	   sp.name,
+	   count(DISTINCT s.story_id) as storyCount,
+	   sum(CASE WHEN s.story_status_id = 'A' THEN 1 ELSE 0 END) as acceptedStories,
+	   sum(CASE WHEN s.story_status_id = 'C' THEN 1 ELSE 0 END) as completedStories,
+	   sum(CASE WHEN s.story_status_id = 'I' THEN 1 ELSE 0 END) as inWorkStories,
+	   sum(CASE WHEN s.story_status_id = 'P' THEN 1 ELSE 0 END) as pendingStories
+	 FROM Sprint sp
+		left outer join Story s on sp.sprint_id = s.sprint_id
+	    group by sp.sprint_id, sp.name
+	""")
+	f = sqlCursor.fetchall()
+	outs = []
+	for feature in f:
+		o = {}
+		o["id"] = feature[0]
+		o["name"] = feature[1]
+		o["storyCount"] = feature[2]
+		o["acceptedStories"] = feature[3]
+		o["completedStories"] = feature[4]
+		o["inWorkStories"] = feature[5]
+		o["pendingStories"] = feature[6]
+		outs.append(o)
+	return jsonify(outs)
+		
 @app.route('/api/sprint/update')
 def update_sprint():
 	print "UpdateSprint(",request.json,")"
@@ -303,24 +327,47 @@ def delete_sprint():
 	return jsonify(o)
 
 ##STORY APIs
-@app.route('/api/story/create')
+@app.route('/api/story', methods=['POST'])
 def create_story():
 	print "CreateStory(",request.json,")"
 	data = request.json
-	new_user = sqlCursor.execute("INSERT INTO Story (feature_id, user_id, sprint_id, name, description) VALUES (?,?,?,?,?)", (data.featureid,data.userId,data.sprintid,data.name, data.description))
-	#Checks the return, if it was anything but 0, there was an error
-	if new_user != 0:
-		return "Something went wrong"
-	f = sqlCursor.fetchone()
-	o = {}
-	o["name"] = f[0]
-	o["user_id"] = f[1]
-	o["sprint_id"] = f[2]
-	o["name"] = f[3]
-	o["description"] = f[4]
-	return jsonify(o)
+	sqlCursor.execute("INSERT INTO Story (feature_id, user_id, sprint_id, name, description, story_status_id) VALUES (?,?,?,?,?,?)", (data['featureId'],data['userId'],data['sprintId'],data['name'],data['description'],data['storyStatusId']))
+	data['id'] = sqlCursor.lastrowid
+	return jsonify(data)
 
-@app.route('/api/story/update')
+##READ
+@app.route('/api/story') #Output: [id, userId, name, description]
+def read_stories():
+	print "ReadStories(",request.json,")"
+	sqlCursor.execute("""
+ 	 SELECT 
+	   s.story_id,
+	   s.feature_id,
+	   s.user_id,
+	   u.email as user_email,
+	   s.sprint_id,
+	   s.name,
+	   s.description,
+	   s.story_status_id
+	 FROM Story s
+	    inner join User u on s.user_id = u.user_id
+	 """)
+	f = sqlCursor.fetchall()
+	outs = []
+	for feature in f:
+		o = {}
+		o["id"] = feature[0]
+		o["featureId"] = feature[1]
+		o["userId"] = feature[2]
+		o["userEmail"] = feature[3]
+		o["sprintId"] = feature[4]
+		o["name"] = feature[5]
+		o["description"] = feature[6]
+		o["storyStatusId"] = feature[7]
+		outs.append(o)
+	return jsonify(outs)
+
+@app.route('/api/story', methods=['PUT'])
 def update_story():
 	print "UpdateStory(",request.json,")"
 	data = request.json

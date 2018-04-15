@@ -128,11 +128,35 @@ insert into Sprint (name) values ('Maroon');
 
 --stories
 
-insert into Story (feature_id, user_id, sprint_id, name, description) values (1, 1, 1, 'Suspendisse ornare consequat lectus.', 'global');
-insert into Story (feature_id, user_id, sprint_id, name, description) values (2, 1, 2, 'In blandit ultrices enim.', 'infrastructure');
-insert into Story (feature_id, user_id, sprint_id, name, description) values (3, 10, 3, 'Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa.', 'initiative');
-insert into Story (feature_id, user_id, sprint_id, name, description) values (4, 12, 4, 'Proin eu mi.', 'budgetary management');
-insert into Story (feature_id, user_id, sprint_id, name, description) values (5, 9, 1, 'Proin eu mi.', 'Decentralized');
-insert into Story (feature_id, user_id, sprint_id, name, description) values (6, 9, 2, 'Etiam justo.', 'moratorium');
-insert into Story (feature_id, user_id, sprint_id, name, description) values (7, 12, 3, 'Etiam faucibus cursus urna.', 'attitude');
-insert into Story (feature_id, user_id, sprint_id, name, description) values (8, 10, 4, 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est.', 'solution');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (1, 1, 1, 'P', 'Suspendisse ornare consequat lectus.', 'global');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (2, 1, 2, 'P', 'In blandit ultrices enim.', 'infrastructure');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (3, 10, 3, 'P', 'Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa.', 'initiative');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (4, 12, 4, 'P', 'Proin eu mi.', 'budgetary management');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (5, 9, 1, 'P', 'Proin eu mi.', 'Decentralized');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (6, 9, 2, 'P', 'Etiam justo.', 'moratorium');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (7, 12, 3, 'P', 'Etiam faucibus cursus urna.', 'attitude');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (8, 10, 4, 'P', 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est.', 'solution');
+
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (1, 1, 1, 'I', 'Suspendisse ornare consequat lectus.', 'global');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (2, 1, 2, 'I', 'In blandit ultrices enim.', 'infrastructure');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (4, 12, 4, 'I', 'Proin eu mi.', 'budgetary management');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (6, 9, 2, 'I', 'Etiam justo.', 'moratorium');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (7, 12, 3, 'I', 'Etiam faucibus cursus urna.', 'attitude');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (8, 10, 4, 'I', 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est.', 'solution');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (2, 1, 2, 'I', 'In blandit ultrices enim.', 'infrastructure');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (3, 10, 3, 'I', 'Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa.', 'initiative');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (5, 9, 1, 'I', 'Proin eu mi.', 'Decentralized');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (6, 9, 2, 'I', 'Etiam justo.', 'moratorium');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (8, 10, 4, 'I', 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est.', 'solution');
+
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (1, 1, 1, 'C', 'Suspendisse ornare consequat lectus.', 'global');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (2, 1, 2, 'C', 'In blandit ultrices enim.', 'infrastructure');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (3, 10, 3, 'C', 'Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa.', 'initiative');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (5, 9, 1, 'C', 'Proin eu mi.', 'Decentralized');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (6, 9, 2, 'C', 'Etiam justo.', 'moratorium');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (7, 12, 3, 'C', 'Etiam faucibus cursus urna.', 'attitude');
+
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (1, 1, 1, 'A', 'Suspendisse ornare consequat lectus.', 'global');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (4, 12, 4, 'A', 'Proin eu mi.', 'budgetary management');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (8, 10, 4, 'A', 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est.', 'solution');
+insert into Story (feature_id, user_id, sprint_id, story_status_id, name, description) values (8, 10, 4, 'A', 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est.', 'solution');
