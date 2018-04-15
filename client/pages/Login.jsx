@@ -46,7 +46,7 @@ class Dashboard extends React.Component {
             <br /><br />
             <div className="login-panel">
                 <form onSubmit={this.handleSubmit}>
-                    Email Address:<br /><input name="email" type="email" value={this.state.email} onChange={this.handleInputChange} /><br /><br />
+                    Email Address:<br /><input autoFocus name="email" type="email" value={this.state.email} onChange={this.handleInputChange} /><br /><br />
                     Password:<br /><input name="password" type="password" value={this.state.password} onChange={this.handleInputChange} /><br /><br />
                     <input type="submit" value="Sign-in" />
                     {this.state.isLoginError ? <ErrorMessage /> : null} 

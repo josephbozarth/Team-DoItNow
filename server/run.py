@@ -110,6 +110,7 @@ def create_feature():
 	data = request.json
 	sqlCursor.execute("INSERT INTO Feature_Request(user_id, name, description) VALUES(?,?,?)", (data['userId'], data['name'], data['description']))
 	data['id'] = sqlCursor.lastrowid
+	sqlCon.commit()
 	return jsonify(data)
 
 ##READ
@@ -178,7 +179,7 @@ def read_feature_by_user(userId):
 		o["name"] = feature[2]
 		o["description"] = feature[3]
 		outs.append(o)
-	return json.dumps(outs)
+	return jsonify(outs)
 
 ##UPDATE
 @app.route('/api/feature', methods=['PUT']) #This is effectively a replacement so all non-null columns need to be submitted. 
@@ -186,6 +187,7 @@ def update_feature():
 	print "UpdateFeature(",request.json,")"
 	data = request.json
 	sqlCursor.execute("UPDATE Feature_Request SET user_id=?,name=?,description=? WHERE feature_id=?",(data['userId'], data['name'], data['description'], data['id']))
+	sqlCon.commit()
 	return jsonify(data)
 
 ##DELETE
@@ -196,44 +198,54 @@ def delete_feature(id):
 	return jsonify({})
 
 ##USER APIs
-@app.route('/api/user/create')
+@app.route('/api/user', methods=['POST'])
 def create_user():
 	print "Create(",request.json,")"
 	data = request.json
 	password_hash = bcrypt.hashpw(data.password, bcrypt.gensalt())
-	new_user = sqlCursor.execute("INSERT INTO User (email, password_hash, role) VALUES (?,?,?)", (data.email, password_hash, data.role))
+	sqlCursor.execute("INSERT INTO User (email, password_hash, role) VALUES (?,?,?)", (data.email, password_hash, data.role))
+	data['id'] = sqlCursor.lastrowid
+	sqlCon.commit()
+	data['password'] = ''
+	data['password_hash'] = ''
+	return jsonify(data)
+
+@app.route('/api/user') #Input: Output: [id, email, role]
+def read_users():
+	print "ReadFeatureByUser(",")"
+	sqlCursor.execute("SELECT user_id, email, role FROM User")
+	u = sqlCursor.fetchall()
+	outs = []
+	for user in u:
+		o = {}
+		o["id"] = user[0]
+		o["email"] = user[1]
+		o["role"] = user[2]
+		outs.append(o)
+	return jsonify(outs)
+
+@app.route('/api/user/<email>')
+def read_user(email):
+	print "ReadUser(",email,")"
+	new_user = sqlCursor.execute("SELECT user_id, email, role FROM User WHERE email = ?", (email,))
 	#Checks the return, if it was anything but 0, there was an error
 	if new_user != 0:
 		return "Something went wrong"
 	f = sqlCursor.fetchone()
 	o = {}
-	o["email"] = f[0]
-	o["password"] = f[1]
+	o["id"] = f[0]
+	o["email"] = f[1]
 	o["role"] = f[2]
 	return jsonify(o)
 
-@app.route('/api/user/read')
-def read_user():
-	print "ReadUser(",request.json,")"
-	data = request.json
-	new_user = sqlCursor.execute("SELECT * FROM User WHERE email = ?", (data.email,))
-	#Checks the return, if it was anything but 0, there was an error
-	if new_user != 0:
-		return "Something went wrong"
-	f = sqlCursor.fetchone()
-	o = {}
-	o["email"] = f[0]
-	o["password"] = f[1]
-	o["role"] = f[2]
-	return jsonify(o)
-
-@app.route('/api/user/update')
+@app.route('/api/user', methods=['PUT'])
 def update_user():
 	print "Update(",request.json,")"
 	data = request.json
 	#Unclear as to what info should be changed with update, but for now the changes are only applying to password and role
 	password_hash = bcrypt.hashpw(data.password, bcrypt.gensalt())
 	sqlCursor.execute("UPDATE USER SET password_hash=?, role=?,WHERE email=?",(password_hash,data.role,data.email))
+	sqlCon.commit()
 	sqlCursor.execute("SELECT * FROM User WHERE email=?", (data.email,))
 	f = sqlCursor.fetchone()
 	o = {}
@@ -242,20 +254,11 @@ def update_user():
 	o["role"] = f[2]
 	return jsonify(o)
 
-@app.route('/api/user/delete')
-def delete_user():
-	print "DeleteUser(",request.json,")"
-	data = request.json
-	new_user = sqlCursor.execute("DELETE FROM User WHERE email = ?", (data.email,))
-	#Checks the return, if it was anything but 0, there was an error
-	if new_user != 0:
-		return "Something went wrong"
-	f = sqlCursor.fetchone()
-	o = {}
-	o["email"] = f[0]
-	o["password"] = f[1]
-	o["role"] = f[2]
-	return jsonify(o)
+@app.route('/api/user/<email>', methods=['DELETE'])
+def delete_user(email):
+	print "DeleteUser(",email,")"
+	sqlCursor.execute("DELETE FROM User WHERE email = ?", (email,))
+	return jsonify({})
 
 ##SPRINT APIs
 @app.route('/api/sprint', methods=['POST']) #Input: userId, name, description. Output: id
@@ -264,6 +267,7 @@ def create_sprint():
 	data = request.json
 	sqlCursor.execute("INSERT INTO Sprint (name) VALUES(?)", (data['name'],))
 	data['id'] = sqlCursor.lastrowid
+	sqlCon.commit()
 	return jsonify(data)
 
 ##READ
@@ -302,6 +306,7 @@ def update_sprint():
 	print "UpdateSprint(",request.json,")"
 	data = request.json
 	sqlCursor.execute("UPDATE Sprint SET name=? WHERE sprint_id=?",(data['name'], data['id']))
+	sqlCon.commit()
 	return jsonify(data)
 
 @app.route('/api/sprint/<id>', methods=['DELETE'])
@@ -315,7 +320,12 @@ def delete_sprint(id):
 def create_story():
 	print "CreateStory(",request.json,")"
 	data = request.json
-	sqlCursor.execute("INSERT INTO Story (feature_id, user_id, sprint_id, name, description, story_status_id) VALUES (?,?,?,?,?,?)", (data['featureId'],data['userId'],data['sprintId'],data['name'],data['description'],data['storyStatusId']))
+	sqlCursor.execute("""
+		INSERT INTO Story 
+		(feature_id, user_id, sprint_id, name, description, story_status_id) 
+		VALUES (?,?,?,?,?,?)
+	""", (data['featureId'],data['userId'],data['sprintId'],data['name'],data['description'],data['storyStatusId']))
+	sqlCon.commit()
 	data['id'] = sqlCursor.lastrowid
 	return jsonify(data)
 
@@ -355,33 +365,31 @@ def read_stories():
 def update_story():
 	print "UpdateStory(",request.json,")"
 	data = request.json
-	sqlCursor.execute("UPDATE Story SET feature_id=?, user_id=?, sprint_id=?, name=?, description=? WHERE story_id=?",(data.featureid,data.userId,data.sprintid,data.name,data.description,data.storyid))
-	sqlCursor.execute("SELECT * FROM Story WHERE story_id = ?",(data.storyid,))
-	f = sqlCursor.fetchone()
-	o = {}
-	o["name"] = f[0]
-	o["user_id"] = f[1]
-	o["sprint_id"] = f[2]
-	o["name"] = f[3]
-	o["description"] = f[4]
-	return jsonify(o)
+	sqlCursor.execute("UPDATE Story SET feature_id=?, user_id=?, sprint_id=?, name=?, description=?, story_status_id=? WHERE story_id=?",(data['featureId'],data['userId'],data['sprintId'],data['name'],data['description'],data['storyStatusId'],data['id']))
+	sqlCon.commit()
+	return jsonify(data)
 
-@app.route('/api/story/delete')
-def delete_story():
-	print "DeleteStory(",request.json,")"
-	data = request.json
-	new_user = sqlCursor.execute("DELETE FROM Story WHERE story_id = ?", (data.storyid,))
-	#Checks the return, if it was anything but 0, there was an error
-	if new_user != 0:
-		return "Something went wrong"
-	f = sqlCursor.fetchone()
-	o = {}
-	o["name"] = f[0]
-	o["user_id"] = f[1]
-	o["sprint_id"] = f[2]
-	o["name"] = f[3]
-	o["description"] = f[4]
-	return jsonify(o)
+@app.route('/api/story/<id>', methods=['DELETE'])
+def delete_story(id):
+	print "DeleteStory(",id,")"
+	sqlCursor.execute("DELETE FROM Story WHERE story_id = ?", (id,))
+	return jsonify({})
+
+@app.route('/api/storyStatus') #Output: [id, userId, name, description]
+def read_storyStatuses():
+	print "ReadStoryStatuses(",")"
+	sqlCursor.execute("""
+ 	 SELECT story_status_id, name, next_story_status_id from Story_Status
+	""")
+	f = sqlCursor.fetchall()
+	outs = []
+	for feature in f:
+		o = {}
+		o["id"] = feature[0]
+		o["name"] = feature[1]
+		o["nextStoryStatusId"] = feature[2]
+		outs.append(o)
+	return jsonify(outs)
 
 @app.route('/app')
 def get_app_home():

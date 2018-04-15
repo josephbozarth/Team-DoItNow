@@ -1,9 +1,10 @@
 import api from 'axios';
+import {getToken} from './session';
 
 const USER_API = '/api/user';
 
-function config(token) {
-  return { headers: { 'X-Agility-Token': token } };
+function config() {
+  return { headers: { 'X-Agility-Token': getToken() } };
 }
 
 function login(email, password) {
@@ -12,15 +13,20 @@ function login(email, password) {
 }
 
 function getCurrentUser(token) {
-  return api.get(`${USER_API}/current`, config(token))
+  return api.get(`${USER_API}/current`, config())
     .then(res => res.data);
 }
 
 function getUser(token, user) {
-  return api.get(`${USER_API}/${user}`, config(token))
+  return api.get(`${USER_API}/${user}`, config())
+    .then(res => res.data);
+}
+
+function getUsers(user) {
+  return api.get(`${USER_API}`, config())
     .then(res => res.data);
 }
 
 module.exports = {
-    login, getCurrentUser, getUser
+    login, getCurrentUser, getUser, getUsers
 };
