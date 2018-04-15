@@ -2,7 +2,9 @@ import React from 'react';
 import {render} from 'react-dom';
 import { Tabs, Tab } from 'react-bootstrap';
 
-import FeatureForm from '../views/FeatureForm.jsx'
+import FeatureForm from '../forms/FeatureForm.jsx'
+import SprintForm from '../forms/SprintForm.jsx'
+
 import FeatureView from '../views/FeatureView.jsx'
 import SprintView from '../views/SprintView.jsx'
 import StoryView from '../views/StoryView.jsx';
@@ -44,6 +46,9 @@ class SprintPlanning extends React.Component {
                 </Tab>
                 <Tab eventKey={2} title="Sprints">
                     <div className="tab-container">
+                        <div>
+                            <SprintForm onUpdate={this.refreshViews.bind(this)} /> 
+                        </div>
                         {(this.state.sprints || []).map(s => <SprintView item={s} display="tile" onUpdate={this.refreshViews.bind(this)} />)}
                     </div>   
                 </Tab>

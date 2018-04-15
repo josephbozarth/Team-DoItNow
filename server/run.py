@@ -63,6 +63,7 @@ def checkPass(email,passwd):
 	u = cursor.fetchone()
 	if u is None:
 		return -1
+	print u[1]
 	if bcrypt.checkpw(passwd.encode('UTF-8'),u[1].encode('UTF-8')):
 		print "User found: ",u
 		return User(u[0])
@@ -257,18 +258,13 @@ def delete_user():
 	return jsonify(o)
 
 ##SPRINT APIs
-@app.route('/api/sprint/create')
+@app.route('/api/sprint', methods=['POST']) #Input: userId, name, description. Output: id
 def create_sprint():
 	print "CreateSprint(",request.json,")"
 	data = request.json
-	new_user = sqlCursor.execute("INSERT INTO Sprint (name) VALUES (?)", (data.name,))
-	#Checks the return, if it was anything but 0, there was an error
-	if new_user != 0:
-		return "Something went wrong"
-	f = sqlCursor.fetchone()
-	o = {}
-	o["name"] = f[0]
-	return jsonify(o)
+	sqlCursor.execute("INSERT INTO Sprint (name) VALUES(?)", (data['name'],))
+	data['id'] = sqlCursor.lastrowid
+	return jsonify(data)
 
 ##READ
 @app.route('/api/sprint') #Output: [id, userId, name, description]
@@ -301,30 +297,18 @@ def read_sprints():
 		outs.append(o)
 	return jsonify(outs)
 		
-@app.route('/api/sprint/update')
+@app.route('/api/sprint', methods=['PUT']) #This is effectively a replacement so all non-null columns need to be submitted. 
 def update_sprint():
 	print "UpdateSprint(",request.json,")"
 	data = request.json
-	#unsure of the actual programming architecture, so think of this statement as pseudo-code for now
-	sqlCursor.execute("UPDATE Sprint SET name=? WHERE name=?",(data.new_name,data.old_name))
-	sqlCursor.execute("SELECT * FROM Sprint WHERE name=?", (data.new_name,))
-	f = sqlCursor.fetchone()
-	o = {}
-	o["name"] = f[0]
-	return jsonify(o)
+	sqlCursor.execute("UPDATE Sprint SET name=? WHERE sprint_id=?",(data['name'], data['id']))
+	return jsonify(data)
 
-@app.route('/api/sprint/delete')
-def delete_sprint():
-	print "DeleteSprint(",request.json,")"
-	data = request.json
-	new_user = sqlCursor.execute("DELETE FROM Sprint WHERE name = ?", (data.name,))
-	#Checks the return, if it was anything but 0, there was an error
-	if new_user != 0:
-		return "Something went wrong"
-	f = sqlCursor.fetchone()
-	o = {}
-	o["name"] = f[0]
-	return jsonify(o)
+@app.route('/api/sprint/<id>', methods=['DELETE'])
+def delete_sprint(id):
+	print "DeleteSprint(",id,")"
+	sqlCursor.execute("DELETE FROM Sprint WHERE sprint_id = ?", (id,))
+	return jsonify({})
 
 ##STORY APIs
 @app.route('/api/story', methods=['POST'])

@@ -21,6 +21,21 @@ function getSprintStories(token, id) {
     .then(res => res.data);
 }
 
+function createSprint(sprint) {
+  return api.post(`${SPRINT_API}`, sprint, config())
+    .then(res => res.data);
+}
+
+function updateSprint(sprint) {
+  return api.put(`${SPRINT_API}`, sprint, config())
+    .then(res => res.data);
+}
+
+function deleteSprint(id) {
+  return api.delete(`${SPRINT_API}/${id}`, config())
+    .then(res => res.data);
+}
+
 module.exports = {
-    getSprints, getSprint, getSprintStories
+    getSprints, getSprint, getSprintStories, createSprint, updateSprint, deleteSprint
 };

@@ -19,7 +19,7 @@ class Dashboard extends React.Component {
         return (<div>
             <h2>Dashboard</h2>
             <div>
-                <Button><i class="fa fa-plus"></i>&nbsp;Add Widget</Button>
+                <Button><i className="fa fa-plus"></i>&nbsp;Add Widget</Button>
             </div>
             <div>
                 <WelcomeWidget user={this.state.user} />
