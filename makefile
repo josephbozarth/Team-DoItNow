@@ -45,7 +45,7 @@ ifndef FLASK
 endif
 	$(info Flask found)
 
-#expose our server to github
+#expose our server to github for webhook
 webhook_serv:
 	./ngrok http 4567
 
