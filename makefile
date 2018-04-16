@@ -47,6 +47,8 @@ endif
 
 #expose our server to github for webhook
 webhook_serv:
+	wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip
+	unzip ngrok-stable-linux-386.zip
 	./ngrok http 4567
 
 # Runs PIP and any other required package managers to install third-party dependencies.
