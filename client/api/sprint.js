@@ -1,23 +1,24 @@
 import api from 'axios';
+import {getToken} from './session';
 
 const SPRINT_API = '/api/sprint';
 
-function config(token) {
-  return { headers: { 'X-Agility-Token': token } };
+function config() {
+  return { headers: { 'X-Agility-Token': getToken() } };
 }
 
-function getSprints(token) {
-  return api.get(`${SPRINT_API}`, config(token))
+function getSprints() {
+  return api.get(`${SPRINT_API}`, config())
     .then(res => res.data);
 }
 
-function getSprint(token, id) {
-  return api.get(`${SPRINT_API}/${id}`, config(token))
+function getSprint(id) {
+  return api.get(`${SPRINT_API}/${id}`, config())
     .then(res => res.data);
 }
 
-function getSprintStories(token, id) {
-  return api.get(`${SPRINT_API}/${id}/story`, config(token))
+function getSprintStories(id) {
+  return api.get(`${SPRINT_API}/${id}/story`, config())
     .then(res => res.data);
 }
 

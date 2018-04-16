@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import { ProgressBar, Button } from 'react-bootstrap';
+import { ProgressBar, Button, Label } from 'react-bootstrap';
 import Dialog from 'react-bootstrap-dialog';
 import {deleteFeature} from '../api/feature';
 import StoryCollectionMetrics from '../components/StoryCollectionMetrics.jsx';
@@ -36,7 +36,10 @@ class FeatureView extends React.Component {
     render () {
         if (this.props.display === 'tile') {
             return (<div className="widget feature-tile">
-                <div className="title"><b title={this.props.item.name}>{this.props.item.name}</b></div>
+                <div className="title">
+                    <Label bsStyle="warning">FR-{this.props.item.id}</Label>&nbsp;
+                    <b title={this.props.item.name}>{this.props.item.name}</b>
+                </div>
                 <div><i className="fa fa-user"></i>&nbsp;{this.props.item.userEmail}</div>
                 <StoryCollectionMetrics item={this.props.item} />
                 <FeatureForm item={this.props.item} onUpdate={this.props.onUpdate} />&nbsp;

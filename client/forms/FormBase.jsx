@@ -64,10 +64,10 @@ class FormBase extends React.Component {
 render () {
     return (<span>
         {this.state.isEdit && (
-            <Button onClick={this.openModal}><i className="fa fa-edit"></i></Button>            
+            <Button bsStyle={this.props.bsStyle} bsSize={this.props.bsSize} onClick={this.openModal}><i className="fa fa-edit"></i></Button>
         )}
         {!this.state.isEdit && (
-            <Button onClick={this.openModal}><i className="fa fa-plus"></i>&nbsp;Add {this.getName()}</Button>            
+            <Button bsStyle={this.props.bsStyle} bsSize={this.props.bsSize} onClick={this.openModal}><i className="fa fa-plus"></i>&nbsp;Add {this.getName()}</Button>            
         )}
         {this.state.modalActive && (
         <div className='popup'>

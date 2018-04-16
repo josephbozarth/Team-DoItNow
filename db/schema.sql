@@ -40,7 +40,7 @@ CREATE TABLE Story (
   story_id INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT , 
   feature_id INTEGER, 
   user_id INTEGER NOT NULL, 
-  sprint_id INTEGER NOT NULL, 
+  sprint_id INTEGER, 
   story_status_id TEXT DEFAULT 'P',
   name text NOT NULL, 
   description text, 

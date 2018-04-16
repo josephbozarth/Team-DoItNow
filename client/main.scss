@@ -56,13 +56,20 @@ body.app-page {
         }
     }
 
+    div.section-buttons {
+        float: right;
+        margin-right: -5px;
+        margin-top: -3px;
+    }
+
     div.widget {
         float: left;
         width: 250px;
         padding: 10px;
         margin: 10px 10px 0 0;
         box-shadow: 0 0 3px #aaaaaa;
-        background-color: lightgoldenrodyellow;
+        border-radius: 3px;        
+        background-color: white;
 
         .right{
             float:right;
@@ -78,10 +85,15 @@ body.app-page {
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        .related-objects {
+            padding-bottom: 10px;
+            font-size: 16px;
+        }
     }
 
     div.feature-tile {
-        background-color: lightgoldenrodyellow;
+        background-color: #f7f7e6;
         cursor: pointer;
 
         .story-count {
@@ -91,7 +103,7 @@ body.app-page {
     }
 
     div.sprint-tile {
-        background-color: lightgreen;   
+        background-color: #c1f4c1;   
         cursor: pointer;
 
         .story-count {
@@ -101,7 +113,7 @@ body.app-page {
     }
 
     div.story-tile {
-        background-color: lightskyblue;   
+        background-color: #d5e8f2;   
         cursor: pointer;
     }
 
@@ -162,3 +174,4 @@ div.popup {
     width: 466px;
     height: 100px;
   }  
+

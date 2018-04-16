@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import { ProgressBar, Button } from 'react-bootstrap';
+import { ProgressBar, Button, Label } from 'react-bootstrap';
 import Dialog from 'react-bootstrap-dialog';
 import {deleteSprint} from '../api/sprint';
 import StoryCollectionMetrics from '../components/StoryCollectionMetrics.jsx';
@@ -36,7 +36,10 @@ class SprintView extends React.Component {
     render () {
         if (this.props.display === 'tile') {
             return (<div className="widget sprint-tile">
-                <div className="title"><b title={this.props.item.name}>{this.props.item.name}</b></div>
+                <div className="title">
+                    <Label bsStyle="success">SP-{this.props.item.id}</Label>&nbsp;
+                    <b title={this.props.item.name}>{this.props.item.name}</b>
+                    </div>
                 <StoryCollectionMetrics item={this.props.item} />
                 <SprintForm item={this.props.item} onUpdate={this.props.onUpdate} />&nbsp;
                 <Button onClick={this.onDelete}><i className="fa fa-trash"></i></Button>
