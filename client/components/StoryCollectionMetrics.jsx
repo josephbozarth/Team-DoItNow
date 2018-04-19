@@ -21,7 +21,7 @@ class StoryCollectionMetrics extends React.Component {
                 <div className="story-count"><b>{this.props.item.storyCount}</b> stories ({(this.props.item.acceptedPercent || 0)}% Complete)</div>
                 {this.props.item.storyCount > 0 && (<ProgressBar>
                     <ProgressBar title="Pending Stories" bsStyle="warning" now={this.props.item.pendingPercent} label={this.props.item.pendingStories} />
-                    <ProgressBar striped title="In Work Stories" bsStyle="warning" now={this.props.item.inWorkPercent} label={this.props.item.inWorkStories} />
+                    <ProgressBar striped title="In Work Stories" bsStyle="primary" now={this.props.item.inWorkPercent} label={this.props.item.inWorkStories} />
                     <ProgressBar title="Completed Stories" bsStyle="info" now={this.props.item.completedPercent} label={this.props.item.completedStories} />
                     <ProgressBar title="Accepted Stories" bsStyle="success" now={this.props.item.acceptedPercent} label={this.props.item.acceptedStories} />
                 </ProgressBar>)}

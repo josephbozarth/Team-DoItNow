@@ -35,11 +35,11 @@ class FeatureForm extends FormBase {
     renderForm() {        
         return (<div>
         <label> Name: &nbsp;</label>
-        <input autoFocus size="50" type="text" name="name" placeholder="ex. Add Github Integration" value={this.state.name} onChange={this.handleChange}/>
-        <br /><br />
+        <input className="form-control" autoFocus size="50" type="text" name="name" placeholder="ex. Add Github Integration" value={this.state.name} onChange={this.handleChange}/>
+        <br />
         <div>
-            <label> Description:&nbsp; <br /><br /><br /><br /><br /></label>
-            <textarea name="description" id="desc" rows="10" value={this.state.description} onChange={this.handleChange}></textarea>
+            <label> Description:&nbsp;</label>
+            <textarea className="form-control" name="description" id="desc" rows="10" value={this.state.description} onChange={this.handleChange}></textarea>
         </div>
         <hr width="100%"></hr>
         <div className="footer">

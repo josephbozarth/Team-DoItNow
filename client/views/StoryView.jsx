@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Label } from 'react-bootstrap';
 import Dialog from 'react-bootstrap-dialog';
 import {render} from 'react-dom';
-import {deleteStory} from '../api/story';
+import {deleteStory, getStoryStatusColors} from '../api/story';
 
 import StoryForm from '../forms/StoryForm.jsx';
 
@@ -41,9 +41,14 @@ class StoryView extends React.Component {
                 </div>
                 <div><i className="fa fa-user"></i>&nbsp;{this.props.item.userEmail}</div>
                 <div className="title">{this.props.item.description}</div>
-                <div className="related-objects">
+                <div className="related-objects float-container">
+                    <div className="left">
                     { this.props.item.featureId && (<span><Label bsStyle="warning">FR-{this.props.item.featureId}</Label>&nbsp;</span>)}
                     { this.props.item.sprintId && (<span><Label bsStyle="success">SP-{this.props.item.sprintId}</Label></span>)}
+                    </div>
+                    <div className="right">
+                    <Label bsStyle={getStoryStatusColors()[this.props.item.storyStatusId]}>{this.props.item.storyStatusName}</Label>
+                    </div>
                 </div>
                 <StoryForm item={this.props.item} onUpdate={this.props.onUpdate} 
                     features={this.props.features} 

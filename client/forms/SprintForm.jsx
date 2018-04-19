@@ -34,7 +34,7 @@ class SprintForm extends FormBase {
     renderForm() {        
         return (<div>
         <label> Name: &nbsp;</label>
-        <input autoFocus size="50" type="text" name="name" placeholder="ex. Sprint 5" value={this.state.name} onChange={this.handleChange}/>
+        <input className="form-control" autoFocus size="50" type="text" name="name" placeholder="ex. Sprint 5" value={this.state.name} onChange={this.handleChange}/>
         <hr width="100%"></hr>
         <div className="footer">
             <input type="submit" value={this.state.isEdit ? "Update" : "Create"} className="btn btn-primary" />

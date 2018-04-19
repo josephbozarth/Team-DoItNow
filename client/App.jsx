@@ -4,12 +4,14 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Button, Nav, Navbar, NavDropdown, MenuItem, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
+import Logo from './components/Logo.jsx';
 import UserMenu from './components/UserMenu.jsx';
 
 import Login from './pages/Login.jsx';
 
 import Dashboard from './pages/Dashboard.jsx';
 import SprintPlanning from './pages/SprintPlanning.jsx';
+import StoryBoard from './pages/StoryBoard.jsx';
 import Team from './pages/Team.jsx';
 
 const ListItemLink = ({ to, label }) => (
@@ -28,8 +30,7 @@ class App extends React.Component
                 <div>
                     <div className="header">
                         <div className="header-left">
-                            <i className="fa fa-gear"></i>&nbsp;
-                            <h1>Agility</h1>
+                            <Logo />
                         </div>
                         <div className="header-right">
                             <UserMenu />
@@ -43,14 +44,15 @@ class App extends React.Component
                             <LinkContainer to="/app/sprint-planning">
                                 <NavItem eventKey={2}>Sprint Planning</NavItem>
                             </LinkContainer>
-                            <LinkContainer to="/app/team">
-                                <NavItem eventKey={3}>Team</NavItem>
+                            <LinkContainer to="/app/story-board">
+                                <NavItem eventKey={3}>Story Board</NavItem>
                             </LinkContainer>
                         </Nav>
                     </div>
                     <div className="page-container">
                         <Route path="/app/dashboard" component={Dashboard} />
                         <Route path="/app/sprint-planning" component={SprintPlanning} />
+                        <Route path="/app/story-board" component={StoryBoard} />
                         <Route path="/app/team" component={Team} />
                     </div>
                 </div>

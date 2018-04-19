@@ -22,6 +22,15 @@ function getStoryStatuses() {
     .then(res => res.data);
 }
 
+function getStoryStatusColors() {
+  return {
+    'P': 'warning',
+    'I': 'primary',
+    'C': 'info',
+    'A': 'success'
+  };
+}
+
 function createStory(story) {
   let result = story;
   result.featureId = !result.featureId ? null : parseInt(result.featureId);
@@ -41,5 +50,5 @@ function deleteStory(id) {
 }
 
 module.exports = {
-    getStories, getStory, createStory, updateStory, deleteStory, getStoryStatuses
+    getStories, getStory, createStory, updateStory, deleteStory, getStoryStatuses, getStoryStatusColors
 };

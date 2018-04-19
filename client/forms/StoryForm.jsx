@@ -38,24 +38,26 @@ class StoryForm extends FormBase {
     renderForm() {        
         return (<div>
         <label> Name: &nbsp;</label>
-        <input autoFocus size="50" type="text" name="name" placeholder="ex. Add Github Integration" value={this.state.name} onChange={this.handleChange}/>
-        <br /><br />
+        <input className="form-control" autoFocus size="50" type="text" name="name" placeholder="ex. Add Github Integration" value={this.state.name} onChange={this.handleChange}/>
+        <br />
         <div>
-            <label> Description:&nbsp; <br /><br /><br /><br /><br /></label>
-            <textarea name="description" id="desc" rows="10" value={this.state.description} onChange={this.handleChange}></textarea>
+            <label> Description:&nbsp;</label>
+            <textarea className="form-control" name="description" id="desc" rows="5" value={this.state.description} onChange={this.handleChange}></textarea>
         </div>
+        <br />
         <div>
             <label> Assigned User:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <select name="userId"
+            <select className="form-control" name="userId"
                 value={this.state.userId} 
                 onChange={this.handleChange} 
             >
             {this.props.users.map(user => <option key={user.id} value={user.id}>{user.email}</option>)}
             </select>
         </div>
+        <br />
         <div>
             <label> Feature:&nbsp;</label>
-            <select name="featureId"
+            <select className="form-control" name="featureId"
                 value={this.state.featureId} 
                 onChange={this.handleChange} 
             >
@@ -63,9 +65,10 @@ class StoryForm extends FormBase {
             {this.props.features.map(f => <option key={f.id} value={f.id}>[FR-{f.id}]&nbsp;{f.name}</option>)}
             </select>
         </div>
+        <br />
         <div>
             <label> Sprint:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <select name="sprintId"
+            <select className="form-control" name="sprintId"
                 value={this.state.sprintId} 
                 onChange={this.handleChange} 
             >
@@ -73,10 +76,10 @@ class StoryForm extends FormBase {
             {this.props.sprints.map(sp => <option key={sp.id} value={sp.id}>[SP-{sp.id}]&nbsp;{sp.name}</option>)}
             </select>
         </div>
-
+        <br />
         <div>
             <label> Story Status:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <select name="storyStatusId"
+            <select className="form-control" name="storyStatusId"
                 value={this.state.storyStatusId} 
                 onChange={this.handleChange} 
             >

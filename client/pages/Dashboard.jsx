@@ -1,8 +1,9 @@
 import React from 'react';
 import {render} from 'react-dom';
+import { Button } from 'react-bootstrap';
 
 import WelcomeWidget from '../widgets/WelcomeWidget.jsx';
-import { Button } from 'react-bootstrap';
+import QotdWidget from '../widgets/QotdWidget.jsx';
 
 export default
 class Dashboard extends React.Component {
@@ -19,10 +20,8 @@ class Dashboard extends React.Component {
         return (<div>
             <h2>Dashboard</h2>
             <div>
-                <Button><i className="fa fa-plus"></i>&nbsp;Add Widget</Button>
-            </div>
-            <div>
                 <WelcomeWidget user={this.state.user} />
+                <QotdWidget user={this.state.user} />
             </div>
         </div>);
     }

@@ -44,7 +44,7 @@ class SprintPlanning extends React.Component {
                 <Tab eventKey={1} title="Feature Requests">
                     <div className="tab-container">
                         <div>
-                            <FeatureForm onUpdate={this.refreshViews} /> 
+                            <FeatureForm bsStyle="primary" onUpdate={this.refreshViews} /> 
                         </div>
                         {(this.state.features || []).map(f => <FeatureView key={f.id} item={f} display="tile" onUpdate={this.refreshViews} />)}
                     </div>   
@@ -52,7 +52,7 @@ class SprintPlanning extends React.Component {
                 <Tab eventKey={2} title="Sprints">
                     <div className="tab-container">
                         <div>
-                            <SprintForm onUpdate={this.refreshViews} /> 
+                            <SprintForm bsStyle="primary" onUpdate={this.refreshViews} /> 
                         </div>
                         {(this.state.sprints || []).map(s => <SprintView key={s.id} item={s} display="tile" onUpdate={this.refreshViews} />)}
                     </div>   

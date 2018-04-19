@@ -342,9 +342,11 @@ def read_stories():
 	   s.sprint_id,
 	   s.name,
 	   s.description,
-	   s.story_status_id
+	   s.story_status_id,
+	   ss.name as story_status_name
 	 FROM Story s
 	    inner join User u on s.user_id = u.user_id
+	    inner join Story_Status ss on s.story_status_id = ss.story_status_id
 	 """)
 	f = sqlCursor.fetchall()
 	outs = []
@@ -358,6 +360,7 @@ def read_stories():
 		o["name"] = feature[5]
 		o["description"] = feature[6]
 		o["storyStatusId"] = feature[7]
+		o["storyStatusName"] = feature[8]
 		outs.append(o)
 	return jsonify(outs)
 
@@ -379,7 +382,8 @@ def delete_story(id):
 def read_storyStatuses():
 	print "ReadStoryStatuses(",")"
 	sqlCursor.execute("""
- 	 SELECT story_status_id, name, next_story_status_id from Story_Status
+ 	 SELECT story_status_id, name, order_index from Story_Status
+	 order by order_index
 	""")
 	f = sqlCursor.fetchall()
 	outs = []
@@ -387,7 +391,7 @@ def read_storyStatuses():
 		o = {}
 		o["id"] = feature[0]
 		o["name"] = feature[1]
-		o["nextStoryStatusId"] = feature[2]
+		o["orderIndex"] = feature[2]
 		outs.append(o)
 	return jsonify(outs)
 

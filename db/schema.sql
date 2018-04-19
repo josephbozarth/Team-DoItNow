@@ -25,15 +25,14 @@ CREATE TABLE Sprint (
 DROP TABLE IF EXISTS Story_Status;
 CREATE TABLE Story_Status (
   story_status_id TEXT NOT NULL PRIMARY KEY,
-  next_story_status_id TEXT,
   name TEXT NOT NULL,
-  FOREIGN KEY (next_story_status_id) REFERENCES Story_Status(story_status_id)
+  order_index INTEGER NOT NULL
 );
 
-insert into Story_Status (story_status_id, name, next_story_status_id) values ('A', 'Accepted', null);
-insert into Story_Status (story_status_id, name, next_story_status_id) values ('C', 'Completed', 'A');
-insert into Story_Status (story_status_id, name, next_story_status_id) values ('I', 'In Work', 'I');
-insert into Story_Status (story_status_id, name, next_story_status_id) values ('P', 'Pending', 'I');
+insert into Story_Status (story_status_id, name, order_index) values ('P', 'Pending', 1);
+insert into Story_Status (story_status_id, name, order_index) values ('I', 'In Work', 2);
+insert into Story_Status (story_status_id, name, order_index) values ('C', 'Completed', 3);
+insert into Story_Status (story_status_id, name, order_index) values ('A', 'Accepted', 4);
 
 DROP TABLE IF EXISTS Story;
 CREATE TABLE Story (

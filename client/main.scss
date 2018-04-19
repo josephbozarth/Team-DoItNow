@@ -12,13 +12,23 @@ body.login-page {
     text-align: center;
 
     .login-panel {
-        border: 1px solid #aaaaaa;
-        padding: 10px;
-        background-color: #dddddd;
-        display: inline-block;
-        width: 300px;
+        width: 450px;
+        margin: auto;
+        text-align: center;
     }
 
+}
+
+span.logo {
+    i { font-size: 30px; }
+    h1 { display: inline; }
+    color: #006699;
+}
+
+.form-valign {
+    display: flex;
+    align-items: center;
+    height: 27px;
 }
 
 body.app-page {
@@ -34,18 +44,13 @@ body.app-page {
         overflow: hidden;
         position: relative;
 
-        .header-left {
-            i { font-size: 30px; }
-            h1 { display: inline; }
-            color: #006699;
-            float: left;
-        }
+        .header-left { float: left; }
 
         .header-right { float: right; }
     }
 
     div.menu {
-        background-color: #ddddea;
+        background-image: linear-gradient(to bottom,#d9edf7 0,#b9def0 100%);
         padding: 5px;
         border: 1px solid #aaaaaa;
 
@@ -70,6 +75,11 @@ body.app-page {
         box-shadow: 0 0 3px #aaaaaa;
         border-radius: 3px;        
         background-color: white;
+
+        .float-container {
+            overflow: hidden;
+            position: relative;    
+        }
 
         .right{
             float:right;
@@ -138,6 +148,16 @@ body.app-page {
     div.tab-container {
         padding: 10px;
     }
+
+    div.story-board {
+        div.row > div {
+            border-right: 1px solid #cccccc;
+        }
+
+        div.row:first-child > div {
+            font-size: 26px; 
+        }
+    }
 }
 
 div.popup {
@@ -156,22 +176,23 @@ div.popup {
         border: 1px solid rgba(0,0,0,.2);
         border-radius: 6px;
         box-shadow: 0 5px 15px rgba(0,0,0,.5);
+        overflow: auto;
         position: fixed;
-        left: 35%;
+        left: 30%;
         right: 30%;
-        top: 25%;
+        top: 10%;
         margin: auto;
         background: white;
+
         .footer {
             padding-right: 10px;
             padding-bottom: 10px;
             text-align: right;
         }
+
+        .form-control {
+            width: 90%;
+            margin: auto;
+        }
     }
   }
-
-  #desc {
-    width: 466px;
-    height: 100px;
-  }  
-
